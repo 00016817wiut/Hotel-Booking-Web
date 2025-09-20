@@ -1,0 +1,116 @@
+
+.book__header h1 {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 45px;
+    line-height: 122%;
+    text-align: center;
+    color: #353637;
+    padding-bottom: 16px;
+}
+.book__header p {
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 156%;
+    letter-spacing: 0.02em;
+    text-align: center;
+    color: #959595;
+
+    max-width: 460px;
+    width: 100%;
+    margin: auto;
+}
+
+.book__header {
+    padding-bottom: 46px;
+}
+
+.book__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book__body-image {
+    display: flex;
+    align-items: flex-end;
+    border-radius: 8px 0 0 8px;
+    max-width: 637px;
+    width: 100%;
+    height: 523px;
+    box-shadow: 0 4px 79px 7px rgba(115, 115, 115, 0.12);
+    background: #b1bed0;
+    overflow: hidden;
+}
+.book__body-image img {
+    width: 100%;
+}
+
+.book__body-contacts {
+    border-radius: 0 8px 8px 0;
+    width: 475px;
+    height: 523px;
+    background: #f6fcfa;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.book__body-contacts-info {
+    width: 339px;
+    padding: 0 68px ;
+    height: 368px;
+}
+.book__body-contacts-info ul {
+    padding-top: 15px;
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 200%;
+    letter-spacing: 0.03em;
+    color: #222426;
+}
+.book__body-contacts-info li a {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 144%;
+    letter-spacing: 0.03em;
+    color: #636461;
+    transition: 0.3S;
+}
+.book__body-contacts-info li a:hover {
+    color: #f725007a;
+    font-weight: bold;
+}
+
+
+.book__body-contacts img {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.book__body-contacts-info h1 {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 137%;
+    color: #353637;
+}
+
+.book__body-contacts-info p {
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 162%;
+    letter-spacing: 0.02em;
+    color: #686868;
+}
+
+
+

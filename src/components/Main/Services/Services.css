@@ -1,0 +1,94 @@
+.services__header {
+    margin-bottom: 44px;
+}
+
+.services__header h3{
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0.26em;
+    text-align: center;
+    color: #597193;
+    padding-bottom: 20px;
+}
+.services__header h1 {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 45px;
+    line-height: 122%;
+    text-align: center;
+    color: #353637;
+}
+.services__body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+.services__body-item {
+    border: 1px solid #596b86;
+    border-radius: 2px;
+    width: 350px;
+    height: 158px;
+    padding: 20px 31px 21px 31px;
+}
+.services__body-item h1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 229%;
+    color: #131313;
+}
+.services__body-item p {
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 171%;
+    letter-spacing: 0.02em;
+    color: #9b9b9b; 
+}
+.services__info {
+    margin-top: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.services__info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    position: relative;
+}
+.services__info-item h1 {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 50px;
+    line-height: 110%;
+    text-align: center;
+    color: #596b86;
+    padding-bottom: 10px;
+}
+.services__info-item p {
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 133%;
+    letter-spacing: 0.02em;
+    color: #939393;
+}
+.line {
+    border: 1.50px solid #c3c3c3;
+    width: 54px;
+    height: 0px;
+    transform: rotate(-90deg);
+    position: absolute;
+    right: -50px;
+}

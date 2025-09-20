@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="restaurantList" class="section ">
+  <h2>Select a Restaurant</h2>
+  <ul class="restaurants">
+    <li class="restaurant" data-id="1">Restaurant 1</li>
+    <li class="restaurant" data-id="2">Restaurant 2</li>
+    <li class="restaurant" data-id="3">Restaurant 3</li>
+    <li class="restaurant" data-id="4">Restaurant 4</li>
+    <li class="restaurant" data-id="5">Restaurant 5</li>
+    <li class="restaurant" data-id="6">Restaurant 6</li>
+  </ul>
+</div>
+  <div id="menuSection" class="section hidden">
+    <button id="backToRestaurants">Back to Restaurants</button>
+    <h2 id="menuTitle"></h2>
+    <ul class="menu">
+      <li>
+        <span>Pizza</span>
+        <button class="addToCartBtn">Add to Cart</button>
+      </li>
+      <li>
+        <span>Pasta</span>
+        <button class="addToCartBtn">Add to Cart</button>
+      </li>
+      <li>
+        <span>Burger</span>
+        <button class="addToCartBtn">Add to Cart</button>
+      </li>
+    </ul>
+  </div>
+
+  <div id="cart">
+    <h2>Cart</h2>
+    <ul id="cartItems"></ul>
+  </div>
+  <script src="./index.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+/* *::selection {
+  background: #dd5e42;
+  color: #fff;
+} */
+a {
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+button, input {
+  border: none;
+  background: transparent;
+}
+.content {
+  max-width: 1170px;
+  width: 100%;
+  padding: 0 30px;
+  margin: auto;
+}

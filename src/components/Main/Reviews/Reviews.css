@@ -1,0 +1,111 @@
+.reviews {
+    margin-bottom: 150px;
+}
+.reviews__header h1 {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 125%;
+    color: #353637;
+}
+.reviews__header p {
+    font-family: var(--second-family);
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 144%;
+    letter-spacing: 0.04em;
+    color: #959595;
+}
+.reviews__cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+}
+.reviews__cards-item {
+    width: 350px;
+    height: 389px;
+    border-radius: 6px;
+    background: #f6fcfa;
+ 
+    padding: 50px 37px; 
+    position: relative;
+    transition: 0.3s;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.reviews__cards-item img {
+    margin-bottom: 24px;
+}
+.profile__info {
+    padding-bottom: 28px;
+}
+.profile__info h2 {
+    font-family: var(--third-family);
+    font-weight: 500;
+    font-size: 30px;
+    color: #101828;
+    padding-bottom: 2px;
+    cursor:auto;
+}
+.profile__info p {
+    font-family: var(--third-family);
+    font-weight: 400;
+    font-size: 12px;
+    color: #606772;
+    cursor:auto;
+}
+.review__descr {
+    font-family: var(--font3);
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 186%;
+    letter-spacing: 0.02em;
+    color: #6d7589;
+    cursor:auto;
+   
+}
+.arrows {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    transform: translateY(-55px);
+    background: url("../../../assets/icons/Arrows.svg");
+    width: 55px;
+    height: 55px;
+    
+}
+.arrows2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    
+    transform: translateX(-147px);
+    background: url("../../../assets/icons/Arrows2.svg");
+    height: 147px;
+    width: 147px;
+
+    z-index: -1;
+}
+.reviews__cards-item:hover {
+    box-shadow: 0 10px 19px 0 rgba(66, 66, 66, 0.2);
+    background: rgba(113, 136, 170, 0.55);
+    transform: translateY(-26px);
+}
+.reviews__cards-item:hover .profile__info h2,
+.reviews__cards-item:hover .profile__info p,
+.reviews__cards-item:hover .review__descr {
+    color: #fff;
+    transition: 0.1s;
+}
+.reviews__cards-item:hover .arrows {
+    transform: translateY(0);
+    transition: 0.3s;
+}
+.reviews__cards-item:hover .arrows2 {
+    transition: 0.5s;
+    transform: translateY(0);
+}
