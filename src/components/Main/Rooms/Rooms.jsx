@@ -102,20 +102,20 @@ const Rooms = () => {
                 <div className="rooms__body">
                 {
                     roomData.map(room => (
-                        <div className="rooms__body-item" key={room.id}>
-                            <div className="room__image">
-                              <img src={room.image} alt="Pic" />
-                            </div>
-                            <div className="room__info">
-                                <h1>Deluxe Contrast Room</h1>
-                                <ul>
-                                    <li><img src={size} alt="" /> {room.size}</li>
-                                    <li><img src={bed} alt="" /> {room.beds}</li>
-                                    <li><img src={bath} alt="" /> {room.bath}</li>
-                                </ul>
-                                <p><span>$200</span>/Night</p>
-                            </div>
-                        </div>          
+                      <div className="rooms__body-item" key={room.id}>
+                          <div className="room__image">
+                            <img src={room.image} alt="Pic" />
+                          </div>
+                          <div className="room__info">
+                              <h1>Deluxe Contrast Room</h1>
+                              <ul>
+                                  <li><img src={size} alt="" /> {room.size}</li>
+                                  <li><img src={bed} alt="" /> {room.beds}</li>
+                                  <li><img src={bath} alt="" /> {room.bath}</li>
+                              </ul>
+                              <p><span>$200</span>/Night</p>
+                          </div>
+                      </div>          
                     ))
                 }
                 </div>
