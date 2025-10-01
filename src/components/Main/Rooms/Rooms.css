@@ -16,7 +16,6 @@
     font-family: var(--second-family);
     font-weight: 400;
     font-size: 18px;
-    line-height: 156%;
     letter-spacing: 0.02em;
     text-align: center;
     color: #959595;
@@ -38,17 +37,18 @@
     max-width: 350px;
     height: 427px;
     border-radius: 12px 12px 0 0;
-    cursor: pointer;
-    transition: 0.3s;
+    transition: 0.3s;   
 }
-.rooms__body-item:hover {
-    transform:translateY(-5px);
-    box-shadow: 10px 10px 1px 10px solid #bd0000;
+.room__image img {
+    user-select: none;
+    -webkit-user-drag: none; /* Safari/Chrome */
+    pointer-events: none;  
 }
 .room__image {
     display: flex;
     align-items: baseline;
     width: 100%;
+    cursor: pointer;
 }
 .room__image img{
     width: 100%;
@@ -56,15 +56,16 @@
 }
 .room__info {
     padding: 20px 22px;
-    border: 1px solid #596b86;
+    border: 1px solid #000;
+    border-top: none;
 }
 
 .room__info h1{
     font-family: var(--font-family);
     font-weight: 400;
     font-size: 24px;
-    line-height: 229%;
     color: #131313;
+    padding-bottom: 10px;
 }
 .room__info ul {
     display: flex;
@@ -79,13 +80,13 @@
     line-height: 233%;
     letter-spacing: 0.02em;
     color: #727272;
+    padding-bottom: 10px;
 }
 .room__info p span{
     font-family: var(--font-family);
     font-weight: 600;
     font-size: 30px;
-    line-height: 183%;
-    color: #384d6c;
+    color: #000;
 }
 .room__info p {
     font-family: var(--font-family);

@@ -1,9 +1,10 @@
 .nav {
-  padding: 20px 0;
+  padding: 20px 100px;
   background: #fff;
-  border-bottom-right-radius: 50px;
-  position: sticky;
+  position: sticky; 
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.14);
+  top: 0;
+  z-index: 100;
 }
 .nav__container {
   display: flex;
@@ -15,7 +16,7 @@
   font-weight: 600;
   font-size: 26px;
   line-height: 212%;
-  color: #597193;
+  color: #000000;
 
   display: flex;
   gap: 10px;
@@ -27,7 +28,7 @@
 }
 .nav__list {
   display: flex;
-  max-width: 510px;
+  max-width: 450px;
   width: 100%;
   
   justify-content: space-between;
@@ -41,27 +42,61 @@
   color: #353637;
   cursor: pointer;
   transition: 0.3s;
+  position: relative;
 }
-.nav__list-active {
+.nav__list-item .active {
   font-family: var(--second-family);
   font-weight: 400;
   font-size: 18px;
   line-height: 144%;
   letter-spacing: 0.02em;
-  color: #597193;
-
-  text-decoration: underline;   
-  text-underline-offset: 15px;
+  color: #000;
 }
 
-.nav__list-item:hover {
-  color: #597193;
+.nav__list-item::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #000;
+  transition: width 0.3s ease, right 0.3s ease;
 
-  text-decoration: underline;   
-  text-underline-offset: 15px;
 }
 
+.nav__list-item:hover::after {
+  width: 100%;
+  left: 0;
+}
 
+.nav__right button {
+  padding: 15px 20px;
+  background: #000;
+  color: #fff;
+  border-radius: 1px;
+  cursor: pointer;
+}
+.nav__right button:hover {
+  background: #1b1b1c;
+  transition: 0.3s;
+}
+.nav__right select {
+  margin-left: 15px;
+  padding: 14px;
+  border: none !important;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+.nav__right select option {
+  margin-left: 15px;
+  padding: 15px;
+  border: none !important;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
 /* TABLET */
 @media (max-width: 1024px) {
   .nav__logo div {
