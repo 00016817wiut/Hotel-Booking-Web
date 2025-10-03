@@ -1,5 +1,5 @@
 .nav {
-  padding: 20px 100px;
+  padding: 20px 0;
   background: #fff;
   position: sticky; 
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.14);
@@ -20,7 +20,7 @@
 
   display: flex;
   gap: 10px;
-  align-items:baseline;
+  align-items:baseline; 
 }
 .nav__logo div {
   display: flex;
@@ -28,7 +28,7 @@
 }
 .nav__list {
   display: flex;
-  max-width: 450px;
+  max-width: 350px;
   width: 100%;
   
   justify-content: space-between;
@@ -83,11 +83,12 @@
 }
 .nav__right select {
   margin-left: 15px;
-  padding: 14px;
+  padding: 15px;
   border: none !important;
   background: #000;
   color: #fff;
   cursor: pointer;
+  outline: none;
 }
 .nav__right select option {
   margin-left: 15px;

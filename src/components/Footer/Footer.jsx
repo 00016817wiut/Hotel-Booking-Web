@@ -12,7 +12,7 @@ const Footer = () => {
         <footer className="footer ">
             <div className="footer__container content">
                 <div className="footer__logo-container">
-                    <a href="#" className="footer__logo"><img src={logo} alt="Logo" />Anor Avenue Hotel</a>
+                    <span className="footer__logo"><img src={logo} alt="Logo" />Anor Avenue Hotel</span>
                     <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa template.</p>
                 </div>
                 <div className="footer__contacts">

@@ -10,7 +10,6 @@ const Main = () => {
         <main className="main">
             <div className="main__container content">
                 <Book/>
-                <Rooms/>
                 <Services/>
                 <Discover/>
                 <Reviews/>
