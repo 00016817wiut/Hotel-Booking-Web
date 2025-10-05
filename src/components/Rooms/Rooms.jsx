@@ -1,8 +1,8 @@
 import "./Rooms.css"
 import { Link } from "react-router-dom";
-import size from "../../../assets/icons/size.svg";
-import bed from "../../../assets/icons/bed.svg";
-import bath from "../../../assets/icons/bath.svg";
+import size from "../../assets/icons/size.svg";
+import bed from "../../assets/icons/bed.svg";
+import bath from "../../assets/icons/bath.svg";
 import roomsInfo from "./data/roomsInfo.js"
 
 const Rooms = () => {

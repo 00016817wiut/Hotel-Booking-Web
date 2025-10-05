@@ -1,6 +1,6 @@
-  import room1 from "../../../../assets/images/room1.png";
-  import room2 from "../../../../assets/images/room2.png";
-  import room3 from "../../../../assets/images/room3.png";
+  import room1 from "../../../assets/images/room1.png";
+  import room2 from "../../../assets/images/room2.png";
+  import room3 from "../../../assets/images/room3.png";
   
   const roomsInfo = [
     {

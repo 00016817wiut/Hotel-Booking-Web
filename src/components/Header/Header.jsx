@@ -1,4 +1,4 @@
-import NavBar from "./NavBar/NavBar";
+import NavBar from "../NavBar/NavBar";
 import "./Header.css";
 
 import { Swiper, SwiperSlide, } from "swiper/react";
@@ -9,7 +9,6 @@ import { Scrollbar, Autoplay } from 'swiper/modules';
 const Header = () => {
   return (
     <>
-    <NavBar/>
     <header className="header">
       <div className="header__container content">
         <div className="header__info">

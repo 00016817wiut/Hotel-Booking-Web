@@ -10,34 +10,36 @@ import facebook from "../../assets/icons/footer/facebook.svg";
 const Footer = () => {
     return (
         <footer className="footer ">
-            <div className="footer__container content">
-                <div className="footer__logo-container">
-                    <span className="footer__logo"><img src={logo} alt="Logo" />Anor Avenue Hotel</span>
-                    <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa template.</p>
-                </div>
-                <div className="footer__contacts">
-                    <h2>Contact Us</h2>
-                    <div className="footer__contacts-links">
-                        <a href="#"><img src={loc} alt="location" /> 123 Business Centre London SW1A 1AA</a>
-                        <a href="#"><img src={con} alt="contacts" /> +1 0000 000 00</a>
-                        <a href="#"><img src={email} alt="email" />info@businessname.com</a>
+            <div className="content">
+                <div className="footer__container">
+                    <div className="footer__logo-container">
+                        <span className="footer__logo"><img src={logo} alt="Logo" />Anor Avenue Hotel</span>
+                        <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa template.</p>
                     </div>
-                </div>
-                <div className="footer__socials">
-                    <h2>Follow Us</h2>
-                    <div className="footer__socials-icons">
-                        <div className="icons">
-                            <img width={30} src={tg} alt="" />
-                        </div>
-                          <div className="icons">
-                            <img width={28} src={inst} alt="" />
-                        </div>
-                          <div className="icons">
-                            <img width={30} src={facebook} alt="" />
+                    <div className="footer__contacts">
+                        <h2>Contact Us</h2>
+                        <div className="footer__contacts-links">
+                            <a href="#"><img src={loc} alt="location" /> 123 Business Centre London SW1A 1AA</a>
+                            <a href="#"><img src={con} alt="contacts" /> +1 0000 000 00</a>
+                            <a href="#"><img src={email} alt="email" />info@businessname.com</a>
                         </div>
                     </div>
-                    <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa
-                    template.</p>
+                    <div className="footer__socials">
+                        <h2>Follow Us</h2>
+                        <div className="footer__socials-icons">
+                            <div className="icons">
+                                <img width={30} src={tg} alt="" />
+                            </div>
+                            <div className="icons">
+                                <img width={28} src={inst} alt="" />
+                            </div>
+                            <div className="icons">
+                                <img width={30} src={facebook} alt="" />
+                            </div>
+                        </div>
+                        <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa
+                        template.</p>
+                    </div>
                 </div>
             </div>
 
