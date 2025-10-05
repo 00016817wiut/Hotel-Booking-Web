@@ -1,18 +1,47 @@
-import logo from "../../../assets/icons/logo.svg"
+import logo from "../../assets/icons/logo.svg"
 import "./NavBarMenu.css"
 import "./NavBar.css"
+import { NavLink } from "react-router-dom"
 
 const NavBar = () => {
   return (
     <nav className="nav">
-      <div className="nav__container">
-        <a href="#" className="nav__logo"><img src={logo} alt="Logo" /><div><p>Anor</p> <span> Avenue Hotel</span></div></a>
-        <ul className="nav__list">
-          <li><a href="../../../../../index.html" className="nav__list-item active">Home</a></li>
-          <li><a href="#services" className="nav__list-item">About Us</a></li>
-          <li><a href="#book" className="nav__list-item">Contact Us</a></li>
-          <li><a href="" className="nav__list-item">Blog</a></li>
-        </ul>
+      <div className="nav__container content">
+        <a href="/" className="nav__logo">
+        <img src={logo} alt="Logo" />
+        <div>
+          <p>Anor</p>
+          <span> Avenue Hotel</span>
+        </div>
+      </a>
+
+      <ul className="nav__list">
+        <li>
+          <NavLink to="/rooms" className="nav__list-item">
+            Rooms
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/gallery" className="nav__list-item">
+            Gallery
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/about" className="nav__list-item">
+            About
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/contact" className="nav__list-item">
+            Contact
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/blog" className="nav__list-item">
+            Blog
+          </NavLink>
+        </li>
+      </ul>
         <div className="nav__right">
           <button>Book Now</button>
           <select name="lang" id="lang">

@@ -1,85 +1,166 @@
+
 .discover__container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  flex-wrap: wrap;
 }
+
 .discover__info {
-    border-radius: 0 6px 6px 0;
-    width: 540px;
-    height: 523px;  
-    background: #f6fcfa;
+  border-radius: 6px;
+  flex: 1 1 400px;
+  max-width: 540px;
+  height: auto;
+  background: #f6fcfa;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
+
 .discover__info-container {
-    max-width: 416px;
-    width: 100%;
+  width: 100%;
+  max-width: 416px;
 }
-.discover__info-container h1 {
-    font-family: var(--font-family);
-    font-weight: 400;
-    font-size: 40px;
-    line-height: 137%;
-    color: #353637;
-}
-.discover__info-container p {
-    font-family: var(--second-family);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 162%;
-    letter-spacing: 0.02em;
-    color: #686868;
-}
-.buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 35px;
-}
-.discover__info-container button {
-    font-family: var(--font-family);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 162%;
-    letter-spacing: 0.02em;
-    text-align: center;
-    color: #fff;
 
-    border-radius: 4px;
-    width: 155px;
-    height: 40px;
-    box-shadow: 0 4px 12px 0 rgba(21, 21, 21, 0.15);
-    background: #597193;
+.discover__info-container h1 {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.3;
+  color: #353637;
 }
+
+.discover__info-container p {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: #686868;
+  margin-bottom: 12px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 25px;
+}
+
+.discover__info-container button {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #fff;
+
+  border-radius: 4px;
+  padding: 10px 20px;
+  min-width: 140px;
+  box-shadow: 0 4px 12px 0 rgba(21, 21, 21, 0.15);
+  background: #597193;
+}
+
 .watch__vid {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.watch__vid:hover {
+  gap: 12px;
+}
+
+.watch__vid:hover p {
+  font-weight: 500;
+}
+
+.discover__vid {
+  position: relative;
+  flex: 1 1 400px;
+  max-width: 600px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.discover__vid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.discover__vid-filter {
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.22);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* ----------- MEDIA QUERIES ----------- */
+@media (max-width: 940px) {
+  .discover__container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 11px;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+  .discover__vid {
+    order: -1;
+    width: 500px;
+    flex: 1 1 100%;
+    height: auto;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .discover__vid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 
-    cursor: pointer;
-    transition: 0.3s;
+  .discover__info {
+    width: 500px;
+    flex: 1 1 100%;
+    height: auto;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .discover__info-container h1 {
+    font-size: 28px;
+  }
+
+  .discover__info-container p {
+    font-size: 15px;
+  }
 }
-.watch__vid:hover {
-    gap: 15px;
-}
-.watch__vid:hover p {
-    font-weight: 500;
-}
-.discover__vid {
-    border-radius: 0 6px 6px 0;
-    width: 569px;
-    height: 523px;
-    background: rgba(0, 0, 0, 0.22);
-    position: relative;
-}
-.discover__vid-filter {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.22);
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+
+@media (max-width: 500px) {
+  .discover__info-container h1 {
+    font-size: 24px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .discover__info-container button {
+    width: 100%;
+  }
 }

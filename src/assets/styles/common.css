@@ -4,10 +4,6 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
-/* *::selection {
-  background: #dd5e42;
-  color: #fff;
-} */
 a {
   text-decoration: none;
 }
@@ -23,4 +19,9 @@ button, input {
   width: 100%;
   padding: 0 30px;
   margin: auto;
+}
+@media (max-width: 1200px) {
+  .content {
+    padding: 0 60px;
+  }
 }

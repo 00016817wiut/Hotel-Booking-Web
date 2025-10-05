@@ -1,4 +1,5 @@
 .rooms__header {
+    padding-top: 30px;
     padding-bottom: 46px;
 }
 
@@ -28,6 +29,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
+    margin-bottom: 70px;
 }
 
 .rooms__body-item {
