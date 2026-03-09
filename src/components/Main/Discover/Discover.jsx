@@ -4,7 +4,7 @@ import play from "../../../assets/icons/play_icon.svg"
 
 const Discover = () => {
     return (
-        <section className="discover">
+        <section className="discover" id="discover">
             <div className="discover__container">
                 <div className="discover__info">
                     <div className="discover__info-container">
@@ -12,7 +12,7 @@ const Discover = () => {
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.</p>
                         <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
                         <div className="buttons">
-                            <button>Explore More</button>
+                            <a href="/rooms" className="discover__button">Explore More</a>
                             <div className="watch__vid">
                                 <img src={play} alt="" />
                                 <p>Watch video</p>

@@ -1,90 +1,194 @@
-.header {
-  height: 90vh;
-  width: 100%;
-  background: #393838;
+.hero {
   position: relative;
-}
-.header__container {
-  height: 80vh;
-}
-.header__info {
-  position: sticky;
-  top: 100px;
-  bottom: 100px;
-  max-width: 450px;
-  height: 350px;
+  overflow: hidden;
+  min-height: clamp(560px, 82vh, 760px);
   display: flex;
-  flex-direction: column;
-  
-  gap:10px;
-  z-index: 5;
-
-  z-index: 2;
-  top: 25%;
-}
-.header__info-title {
-  font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 45px;
-  line-height: 122%;
-  color: #ffffff;
-}
-.header__info-descr {
-  font-family: var(--second-family);
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 156%;
-  letter-spacing: 0.02em;
-  color: #f8f5e7
-}
-.header__info-button {
-  display: flex;
-  justify-content: center;
   align-items: center;
+  /* background: linear-gradient(128deg, #8f131e 0%, #b3202a 45%, #d14b2f 100%); */
+  background: url(../../assets/images/uzbekistan-009266ded79fabfcb4.62944021.jpg) no-repeat center/cover;
+}
 
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.493), rgba(76, 10, 17, 0.08)),
+    radial-gradient(circle at 75% 30%, rgba(255, 207, 214, 0.32), transparent 38%);
+}
+
+.hero__atlas {
+  position: absolute;
+  inset: 0;
+  opacity: 0.24;
+  background:
+    radial-gradient(120% 80% at 10% 100%, transparent 45%, rgba(255, 255, 255, 0.25) 46%, transparent 48%),
+    radial-gradient(120% 80% at 80% 0%, transparent 45%, rgba(255, 255, 255, 0.25) 46%, transparent 48%);
+}
+
+.hero__glow {
+  position: absolute;
+  width: min(40vw, 480px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(24px);
+  opacity: 0.35;
+}
+
+.hero__glow--left {
+  left: -14%;
+  bottom: -24%;
+  background: #d1dee09f;
+}
+
+.hero__glow--right {
+  right: -8%;
+  top: -14%;
+  background: #d6d4d496;
+}
+
+.hero__container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  align-items: end;
+  gap: clamp(28px, 4vw, 56px);
+  padding-top: clamp(72px, 11vw, 140px);
+  padding-bottom: clamp(52px, 8vw, 86px);
+}
+
+.hero__content {
+  max-width: 640px;
+  color: #fff4f6;
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 213, 220, 0.55);
+  font-family: var(--third-family);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #fff1f4;
+}
+
+.hero__title {
   font-family: var(--font-family);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 162%;
-  letter-spacing: 0.02em;
+  font-size: var(--font-size-heading);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff8f9;
+  letter-spacing: 0.01em;
+  max-width: 16ch;
+}
+
+.hero__descr {
+  margin-top: 16px;
+  max-width: 52ch;
+  color: rgba(255, 236, 205, 0.95);
+}
+
+.hero__actions {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero__button {
+  min-width: 154px;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
   text-align: center;
-  color: #fff;
-  border-radius: 4px;
-  width: 135px;
-  height: 40px;
-  box-shadow: 0 4px 12px 0 rgba(21, 21, 21, 0.15);
-  background: #000;
+  font-family: var(--third-family);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.hero__button--primary {
+  background: linear-gradient(135deg, #f3b7bf, #d76b78);
+  color: #6d1d18;
+}
+
+.hero__button--primary:hover {
+  transform: translateY(-2px);
+}
+
+.hero__button--ghost {
+  border: 1px solid rgba(255, 214, 220, 0.75);
+  color: #fff4f6;
+}
+
+.hero__button--ghost:hover {
+  background: rgba(255, 240, 217, 0.16);
+}
+
+.hero__booking {
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  background: rgb(255, 255, 255);
+  border: 1px solid rgba(255, 208, 216, 0.4);
+  backdrop-filter: blur(10px);
+  display: grid;
+  gap: 12px;
+}
+
+.hero__booking h2 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  color: #000000;
+  margin-bottom: 4px;
+}
+
+.hero__booking label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: #000000;
+}
+
+.hero__booking input,
+.hero__booking select {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid rgba(204, 201, 196, 0.5);
+  border-radius: var(--radius-sm);
+  background: rgba(183, 179, 180, 0.38);
+  color: #040200;
+}
+
+.hero__booking button {
+  min-height: 42px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #f3b7bf, #d76b78);
+  color: #6d1d18;
+  font-family: var(--third-family);
   cursor: pointer;
-  margin-top: 5px;
-  transition: 0.5s;
 }
-.header__info-button:hover {
-  background: #000;
-}
-/* TABLET */
-@media (max-width: 1024px) {
-  .header__info-title {
-    font-size: 30px;
-  }
-  .header__info-descr {
-    font-family: var(--second-family);
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 156%;
-    letter-spacing: 0.02em;
-    color: #939393;
-  }
-  .header__info {
-    max-width: 370px;
-    display: flex;
-    flex-direction: column;
 
-    gap:16px;
-    z-index: 5;
+@media (max-width: 940px) {
+  .hero__container {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 24px;
+    padding-top: 92px;
   }
-  
-}
-/* PHONE */
-@media (max-width: 767px) {
 
+  .hero__title {
+    max-width: 18ch;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .hero__button {
+    width: 100%;
+  }
 }

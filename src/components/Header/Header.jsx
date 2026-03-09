@@ -1,26 +1,61 @@
-import NavBar from "../NavBar/NavBar";
+
 import "./Header.css";
 
-import { Swiper, SwiperSlide, } from "swiper/react";
-import "swiper/css";
-import { Scrollbar, Autoplay } from 'swiper/modules';
+
 
 
 const Header = () => {
+
+
   return (
-    <>
-    <header className="header">
-      <div className="header__container content">
-        <div className="header__info">
-          <div className="header__info-title">Discover a hotel
-            that defies a new
-            dimension of luxury.</div>
-          <div className="header__info-descr">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.</div>
-          <a href="#rooms" class="header__info-button">Get Started</a>
+    <header className="hero">
+      <div className="hero__overlay" />
+      <div className="hero__atlas" />
+      <div className="hero__glow hero__glow--left" />
+      <div className="hero__glow hero__glow--right" />
+
+      <div className="hero__container content">
+        <div className="hero__content">
+          <p className="hero__eyebrow">Anor hospitality in Tashkent</p>
+          <h1 className="hero__title">Warm Uzbek elegance, inspired by the color and spirit of pomegranate.</h1>
+          <p className="hero__descr">
+            Enjoy bright interiors with atlas-inspired curves, thoughtful comfort, and heartfelt service that makes every stay feel festive and relaxed.
+          </p>
+
+          <div className="hero__actions">
+            <a href="/rooms" className="hero__button hero__button--primary">
+              Explore rooms
+            </a>
+            <a href="/#book" className="hero__button hero__button--ghost">
+              Contact booking
+            </a>
+          </div>
         </div>
-        </div>
+
+        <form className="hero__booking" aria-label="Booking form">
+          <h2>Book your stay</h2>
+          <label>
+            Check-in
+            <input type="date" />
+          </label>
+          <label>
+            Check-out
+            <input type="date" />
+          </label>
+          <label>
+            Guests
+            <select defaultValue="2">
+              <option value="1">1 guest</option>
+              <option value="2">2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4">4 guests</option>
+            </select>
+          </label>
+          <button type="button">Check availability</button>
+        </form>
+      </div>
     </header>
-    </>
-  )
-}
+  );
+};
+
 export default Header;

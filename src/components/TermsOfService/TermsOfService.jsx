@@ -1,7 +1,10 @@
 
+import "../LegalPages.css";
+
 const TermsOfService = () => {
     return (
-        <>
+        <section className="legal-page content">
+            <div className="legal-page__container">
             <h1>Условия использования</h1>
             <p>Добро пожаловать на официальный сайт Anor Avenue Hotel. Пользуясь данным сайтом, вы соглашаетесь с настоящими Условиями.</p>
 
@@ -21,7 +24,8 @@ const TermsOfService = () => {
             <p>По всем вопросам вы можете связаться с нами по телефону, указанному на сайте, или посетить нас лично в Ташкенте, Узбекистан.</p>
 
             <p>Дата последнего обновления: Июнь 2025 года</p>
-        </>
+            </div>
+        </section>
     )
 }
 export default TermsOfService;

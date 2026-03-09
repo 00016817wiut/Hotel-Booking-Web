@@ -1,4 +1,5 @@
-import "./Footer.css"
+import { Link } from "react-router-dom";
+import "./Footer.css";
 import logo from "../../assets/icons/logo.svg";
 import loc from "../../assets/icons/footer/location.svg";
 import con from "../../assets/icons/footer/contacts.svg";
@@ -8,51 +9,67 @@ import inst from "../../assets/icons/footer/instagram.svg";
 import facebook from "../../assets/icons/footer/facebook.svg";
 
 const Footer = () => {
-    return (
-        <footer className="footer ">
-            <div className="content">
-                <div className="footer__container">
-                    <div className="footer__logo-container">
-                        <span className="footer__logo"><img src={logo} alt="Logo" />Anor Avenue Hotel</span>
-                        <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa template.</p>
-                    </div>
-                    <div className="footer__contacts">
-                        <h2>Contact Us</h2>
-                        <div className="footer__contacts-links">
-                            <a href="#"><img src={loc} alt="location" /> 123 Business Centre London SW1A 1AA</a>
-                            <a href="#"><img src={con} alt="contacts" /> +1 0000 000 00</a>
-                            <a href="#"><img src={email} alt="email" />info@businessname.com</a>
-                        </div>
-                    </div>
-                    <div className="footer__socials">
-                        <h2>Follow Us</h2>
-                        <div className="footer__socials-icons">
-                            <div className="icons">
-                                <img width={30} src={tg} alt="" />
-                            </div>
-                            <div className="icons">
-                                <img width={28} src={inst} alt="" />
-                            </div>
-                            <div className="icons">
-                                <img width={30} src={facebook} alt="" />
-                            </div>
-                        </div>
-                        <p>Itawa is a responsive real estate landing page template.Itawa is a  landing page template.Itawa
-                        template.</p>
-                    </div>
-                </div>
-            </div>
+  return (
+    <footer className="footer">
+      <div className="content">
+        <div className="footer__container">
+          <div className="footer__logo-container">
+            <span className="footer__logo">
+              <img src={logo} alt="Anor Avenue Hotel logo" />
+              Anor Avenue Hotel
+            </span>
+            <p>
+              A modern boutique hotel in Tashkent focused on comfortable stays, elegant interiors, and warm hospitality for every guest.
+            </p>
+          </div>
 
-            <div className="footer__bottom">
-                <div className="footer__bottom-container content">
-                    <p>© Anor Avenue Hotel, 2025</p>
-                    <div>
-                        <a href="/privacy-policy">Privacy Policy</a>
-                        <a href="/terms-of-service">Terms of Service</a>
-                    </div>
-                </div>
+          <div className="footer__contacts">
+            <h2>Contact us</h2>
+            <div className="footer__contacts-links">
+              <a href="https://maps.app.goo.gl" target="_blank" rel="noreferrer">
+                <img src={loc} alt="Location icon" />
+                Tashkent, Uzbekistan
+              </a>
+              <a href="tel:+998777673000">
+                <img src={con} alt="Phone icon" />
+                +998 (77) 767 30 00
+              </a>
+              <a href="mailto:info@anoravenue.uz">
+                <img src={email} alt="Email icon" />
+                info@anoravenue.uz
+              </a>
             </div>
-        </footer>
-    )
-}
+          </div>
+
+          <div className="footer__socials">
+            <h2>Follow us</h2>
+            <div className="footer__socials-icons">
+              <a className="icons" href="https://t.me" target="_blank" rel="noreferrer" aria-label="Telegram">
+                <img src={tg} alt="Telegram" />
+              </a>
+              <a className="icons" href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <img src={inst} alt="Instagram" />
+              </a>
+              <a className="icons" href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+                <img src={facebook} alt="Facebook" />
+              </a>
+            </div>
+            <p>Stay updated with seasonal offers, room updates, and travel inspiration from Anor Avenue Hotel.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="footer__bottom">
+        <div className="footer__bottom-container content">
+          <p>© Anor Avenue Hotel, 2026</p>
+          <div>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <Link to="/terms-of-service">Terms of Service</Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
 export default Footer;

@@ -1,75 +1,157 @@
-import logo from "../../assets/icons/logo.svg"
-import "./NavBarMenu.css"
-import "./NavBar.css"
-import { NavLink } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import logo from "../../assets/icons/logo.jpg";
+import "./NavBar.css";
+import "./NavBarMenu.css";
+
+const routeLinks = [
+  { label: "Home", to: "/" },
+  { label: "Rooms", to: "/rooms" },
+];
+
+const sectionLinks = [
+  { label: "About", href: "/#about" },
+  { label: "Facilities", href: "/#services" },
+  { label: "Discover", href: "/#discover" },
+  { label: "FAQ", href: "/#faq" },
+  { label: "Reviews", href: "/#reviews" },
+  { label: "Contact", href: "/#contact" },
+];
+
 
 const NavBar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const closeMenu = () => setIsMenuOpen(false);
+
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
   return (
-    <nav className="nav">
-      <div className="nav__container content">
-        <a href="/" className="nav__logo">
-        <img src={logo} alt="Logo" />
-        <div>
-          <p>Anor</p>
-          <span> Avenue Hotel</span>
-        </div>
-      </a>
+    <>
+      <nav className="nav">
+        <div className="nav__container content">
+          <Link to="/" className="nav__logo" aria-label="Go to homepage">
+            <img src={logo} alt="Anor Avenue Hotel logo" className="nav__logo-image"/>
+            <div>
+              <p>Anor</p>
+              <span>Avenue Hotel</span>
+            </div>
+          </Link>
 
-      <ul className="nav__list">
-        <li>
-          <NavLink to="/rooms" className="nav__list-item">
-            Rooms
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/gallery" className="nav__list-item">
-            Gallery
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/about" className="nav__list-item">
-            About
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/contact" className="nav__list-item">
-            Contact
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/blog" className="nav__list-item">
-            Blog
-          </NavLink>
-        </li>
-      </ul>
-        <div className="nav__right">
-          <button>Book Now</button>
-          <select name="lang" id="lang">
-            <option value="russian">Русский</option>
-            <option value="uzbek">Uzbek</option>
-            <option value="english">English</option>
-          </select>
-        </div>
+          <ul className="nav__list">
+            {routeLinks.map((link) => (
+              <li key={link.to}>
+                <NavLink
+                  to={link.to}
+                  className={({ isActive }) =>
+                    isActive ? "nav__list-item nav__list-item--active" : "nav__list-item"
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+            {sectionLinks.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className="nav__list-item">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        {/* <div className="nav__menu">
-          <button className="hamburger">
-            <div className="bar"></div>
-            <div className="bar"></div>
-            <div className="bar"></div>
-          </button>
-          <div className="nav__bar_menu">
-            <a href="#" className="nav__logo"><img src={logo} alt="Logo" /><div><p>Anor</p> <span> Avenue Hotel</span></div></a>
-            <ul className="nav__menu-list">
-              <li><a href="../../../../../index.html" className="nav__list-item-menu">Home</a></li>
-              <li><a href="#rooms" className="nav__list-item-menu">Rooms</a></li>
-              <li><a href="#services" className="nav__list-item-menu">About Us</a></li>
-              <li><a href="#book" className="nav__list-item-menu">Contact Us</a></li>
-              <li><a href="" className="nav__list-item-menu">Blog</a></li>
-            </ul>
+          <div className="nav__right">
+            <a className="nav__book-button" href="/#contact">
+              Book now
+            </a>
+            <select name="lang" id="lang" aria-label="Choose language">
+              <option value="english">English</option>
+              <option value="russian">Russian</option>
+              <option value="uzbek">Uzbek</option>
+            </select>
           </div>
-        </div> */}
+
+          <div className="nav__menu">
+            <button
+              className={`hamburger ${isMenuOpen ? "hamburger--active" : ""}`}
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-expanded={isMenuOpen}
+              aria-label="Open mobile menu"
+              type="button"
+            >
+              <span className="bar" />
+              <span className="bar" />
+              <span className="bar" />
+            </button>
+          </div>
+        </div>
+      </nav>
+      <div className={`nav__mobile ${isMenuOpen ? "nav__mobile--open" : ""}`}>
+        <div className="nav__mobile-overlay" onClick={closeMenu} />
+        <div className="nav__bar_menu">
+          <div className="nav__bar-top">
+            <Link to="/" className="nav__logo" onClick={closeMenu}>
+              <img src={logo} alt="Anor Avenue Hotel logo" />
+              <div>
+                <p>Anor</p>
+                <span>Avenue Hotel</span>
+              </div>
+            </Link>
+            <button className="nav__close" type="button" onClick={closeMenu} aria-label="Close mobile menu">
+              x
+            </button>
+          </div>
+
+          <ul className="nav__menu-list">
+            {routeLinks.map((link) => (
+              <li key={`mobile-${link.to}`}>
+                <NavLink
+                  to={link.to}
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "nav__list-item-menu nav__list-item-menu--active"
+                      : "nav__list-item-menu"
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
+
+            {sectionLinks.map((link) => (
+              <li key={`mobile-${link.href}`}>
+                <a href={link.href} className="nav__list-item-menu" onClick={closeMenu}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="nav__mobile-actions">
+            <a className="nav__book-button" href="/#contact" onClick={closeMenu}>
+              Book now
+            </a>
+            <select name="lang-mobile" id="lang-mobile" aria-label="Choose language">
+              <option value="english">English</option>
+              <option value="russian">Russian</option>
+              <option value="uzbek">Uzbek</option>
+            </select>
+          </div>
+        </div>
       </div>
-    </nav>
-  )
-}
+    </>
+  );
+};
+
 export default NavBar;

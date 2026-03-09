@@ -4,24 +4,55 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: var(--font-size-text);
+  color: var(--color-text);
+  line-height: 1.55;
+  background: #fff;
+}
+
+#root {
+  min-height: 100vh;
+}
+
 a {
   text-decoration: none;
+  color: inherit;
 }
+
 li {
   list-style: none;
 }
-button, input {
+
+button,
+input,
+select {
   border: none;
   background: transparent;
+  font: inherit;
 }
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
 .content {
-  max-width: 1170px;
+  max-width: var(--content-max);
   width: 100%;
-  padding: 0 30px;
+  padding: 0 24px;
   margin: auto;
 }
+
 @media (max-width: 1200px) {
   .content {
-    padding: 0 60px;
+    padding: 0 20px;
   }
 }

@@ -1,0 +1,107 @@
+.contact__header {
+  text-align: center;
+  margin-bottom: clamp(24px, 4vw, 42px);
+}
+
+.contact__header h1 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-heading);
+  color: var(--color-primary-strong);
+  letter-spacing: 0.01em;
+}
+
+.contact__header p {
+  margin: 14px auto 0;
+  max-width: 56ch;
+  color: var(--color-text-muted);
+}
+
+.contact__body {
+  display: grid;
+  grid-template-columns: 1.1fr minmax(300px, 430px);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(241, 208, 186, 0.8);
+  box-shadow: var(--color-shadow);
+  background: var(--color-surface);
+}
+
+.contact__body-map {
+  min-height: clamp(380px, 55vw, 450px);
+}
+
+.contact__body-map iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: none;
+}
+
+.contact__body-contacts {
+  position: relative;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(186, 103, 109, 0.08), transparent 28%),
+    linear-gradient(170deg, #fff9fa 0%, #ffffff 58%);
+  padding: clamp(24px, 3.2vw, 34px);
+}
+
+.contact__body-contacts > img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0.25;
+}
+
+.contact__body-contacts-info {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.contact__body-contacts-info h1 {
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  color: var(--color-primary-strong);
+}
+
+.contact__body-contacts-info p {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+}
+
+.contact__body-contacts-info ul {
+  margin-top: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.contact__body-contacts-info li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: rgba(179, 32, 42, 0.08);
+  color: #7f2a1c;
+  font-family: var(--third-family);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.contact__body-contacts-info li a:hover {
+  border-color: #dfb4ba;
+  background: #ffffff;
+  transform: translateX(3px);
+}
+
+@media (max-width: 980px) {
+  .contact__body {
+    grid-template-columns: 1fr;
+  }
+
+  .contact__body-image {
+    min-height: 300px;
+  }
+}

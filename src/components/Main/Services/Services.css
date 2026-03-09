@@ -1,94 +1,115 @@
 .services__header {
-    margin-bottom: 44px;
+  text-align: center;
 }
 
-.services__header h3{
-    font-family: var(--second-family);
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    letter-spacing: 0.26em;
-    text-align: center;
-    color: #597193;
-    padding-bottom: 20px;
+.services__header h3 {
+  font-family: var(--third-family);
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  color: var(--color-primary);
+  text-transform: uppercase;
 }
+
 .services__header h1 {
-    font-family: var(--font-family);
-    font-weight: 400;
-    font-size: 45px;
-    line-height: 122%;
-    text-align: center;
-    color: #353637;
+  margin-top: 12px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-heading);
+  color: var(--color-primary-strong);
+  letter-spacing: 0.01em;
 }
-.services__body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-.services__body-item {
-    border: 1px solid #596b86;
-    border-radius: 2px;
-    width: 350px;
-    height: 158px;
-    padding: 20px 31px 21px 31px;
-}
-.services__body-item h1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
 
-    font-family: var(--font-family);
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 229%;
-    color: #131313;
+.services__body {
+  margin-top: clamp(24px, 4vw, 38px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
+
+.services__body-item {
+  flex: 1;
+  padding: 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background:
+    radial-gradient(circle at 86% 14%, rgba(198, 196, 196, 0.08), transparent 30%),
+    var(--color-surface);
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.services__body-item:hover {
+  transform: translateY(-4px);
+  border-color: #ebc7c7;
+}
+
+.services__body-item h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  color: var(--color-primary-strong);
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.services__body-item h2 img {
+  width: 24px;
+  height: 24px;
+}
+
 .services__body-item p {
-    font-family: var(--second-family);
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 171%;
-    letter-spacing: 0.02em;
-    color: #9b9b9b; 
+  margin-top: 10px;
+  color: var(--color-text-muted);
 }
+
 .services__info {
-    margin-top: 120px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  margin-top: clamp(34px, 6vw, 64px);
+  border-radius: var(--radius-lg);
+  padding: clamp(16px, 4vw, 28px);
+  border: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: linear-gradient(
+    90deg,
+    rgba(167, 20, 20, 0.082),
+    rgba(255, 80, 80, 0.08),
+    rgba(255, 80, 80, 0.03)
+  );
+  gap: 10px;
 }
+
 .services__info-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    position: relative;
+  text-align: center;
+  padding: 8px 6px;
 }
-.services__info-item h1 {
-    font-family: var(--font-family);
-    font-weight: 700;
-    font-size: 50px;
-    line-height: 110%;
-    text-align: center;
-    color: #596b86;
-    padding-bottom: 10px;
+
+.services__info-item h2 {
+  font-family: var(--font-family);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  color: var(--color-primary-strong);
+  line-height: 1.1;
 }
+
 .services__info-item p {
-    font-family: var(--second-family);
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 133%;
-    letter-spacing: 0.02em;
-    color: #939393;
+  margin-top: 8px;
+  color: var(--color-text-muted);
+  font-family: var(--third-family);
 }
-.line {
-    border: 1.50px solid #c3c3c3;
-    width: 54px;
-    height: 0px;
-    transform: rotate(-90deg);
-    position: absolute;
-    right: -50px;
+
+@media (max-width: 980px) {
+  .services__body {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .services__info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .services__body,
+  .services__info {
+    grid-template-columns: 1fr;
+  }
 }

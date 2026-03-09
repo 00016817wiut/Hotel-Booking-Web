@@ -1,0 +1,115 @@
+.page-not-found {
+  position: relative;
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  overflow: hidden;
+}
+
+.page-not-found__shape {
+  position: absolute;
+  width: min(42vw, 380px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(26px);
+  opacity: 0.45;
+}
+
+.page-not-found__shape--left {
+  top: -80px;
+  left: -120px;
+  background: #d54f3b;
+}
+
+.page-not-found__shape--right {
+  right: -100px;
+  bottom: -120px;
+  background: #d88593;
+}
+
+.page-not-found__card {
+  position: relative;
+  z-index: 1;
+  width: min(700px, 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(241, 208, 186, 0.85);
+  background:
+    linear-gradient(170deg, #fff9fa 0%, #ffffff 62%);
+  box-shadow: var(--color-shadow);
+  padding: clamp(24px, 4vw, 40px);
+  text-align: center;
+  overflow: hidden;
+}
+
+.page-not-found__card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.page-not-found__code,
+.page-not-found__card h1,
+.page-not-found__card > p,
+.page-not-found__actions {
+  position: relative;
+  z-index: 1;
+}
+
+.page-not-found__code {
+  font-family: var(--font-family);
+  font-size: clamp(3.2rem, 7vw, 6rem);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-primary-strong);
+  letter-spacing: 0.04em;
+}
+
+.page-not-found__card h1 {
+  margin-top: 10px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-subheading);
+  color: var(--color-primary-strong);
+}
+
+.page-not-found__card > p {
+  margin: 12px auto 0;
+  max-width: 52ch;
+  color: var(--color-text-muted);
+}
+
+.page-not-found__actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.page-not-found-btn {
+  min-width: 130px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-family: var(--third-family);
+}
+
+.page-not-found-btn--primary {
+  color: #fff6e9;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+}
+
+.page-not-found-btn--ghost {
+  color: var(--color-primary-strong);
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+}
+
+@media (max-width: 540px) {
+  .page-not-found-btn {
+    width: 100%;
+  }
+}
