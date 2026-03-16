@@ -1,6 +1,5 @@
 import About from "../../components/Main/About/About";
 import Contact from "../../components/Main/Contact/Contact";
-import Discover from "../../components/Main/Discover/Discover";
 import Faq from "../../components/Main/Faq/Faq";
 import "./Main.css"
 import Reviews from "../../components/Main/Reviews/Reviews";
@@ -12,7 +11,6 @@ const Main = () => {
             <div className="main__container content">
                 <About/>
                 <Services/>
-                <Discover/>
                 <Contact/>
                 <Faq/>
                 <Reviews/>

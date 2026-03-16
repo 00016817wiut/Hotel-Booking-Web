@@ -37,13 +37,13 @@
 .hero__glow--left {
   left: -14%;
   bottom: -24%;
-  background: #d1dee09f;
+  background: #ffffff52;
 }
 
 .hero__glow--right {
   right: -8%;
   top: -14%;
-  background: #d6d4d496;
+  background: #ffffff96;
 }
 
 .hero__container {
@@ -54,9 +54,9 @@
   grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
   align-items: end;
   gap: clamp(28px, 4vw, 56px);
-  padding-top: clamp(72px, 11vw, 140px);
-  padding-bottom: clamp(52px, 8vw, 86px);
-}
+  padding-top: clamp(20px, 11vw, 80px) !important;
+  padding-bottom: clamp(20px, 8vw, 80px) !important;
+} 
 
 .hero__content {
   max-width: 640px;

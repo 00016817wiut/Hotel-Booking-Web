@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/icons/logo.jpg";
 import "./NavBar.css";
 import "./NavBarMenu.css";
@@ -12,7 +12,6 @@ const routeLinks = [
 const sectionLinks = [
   { label: "About", href: "/#about" },
   { label: "Facilities", href: "/#services" },
-  { label: "Discover", href: "/#discover" },
   { label: "FAQ", href: "/#faq" },
   { label: "Reviews", href: "/#reviews" },
   { label: "Contact", href: "/#contact" },
@@ -22,12 +21,30 @@ const sectionLinks = [
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-
-  const closeMenu = () => setIsMenuOpen(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
-    closeMenu();
-  }, [location.pathname, location.hash]);
+    const isReload = performance.getEntriesByType("navigation")[0].type === "reload"
+
+    if (isReload) {
+      window.scrollTo(0, 0)
+      return
+    }
+    else {
+      if (location.hash) {
+        const el = document.querySelector(location.hash)
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" })
+        }
+      }
+      
+      if (location.pathname === "/rooms") {
+        window.scrollTo(0, 0)
+      }
+    }
+  }, [location, navigate])
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -41,7 +58,7 @@ const NavBar = () => {
       <nav className="nav">
         <div className="nav__container content">
           <Link to="/" className="nav__logo" aria-label="Go to homepage">
-            <img src={logo} alt="Anor Avenue Hotel logo" className="nav__logo-image"/>
+            <img src={logo} alt="Anor Avenue Hotel logo" className="nav__logo-image" />
             <div>
               <p>Anor</p>
               <span>Avenue Hotel</span>
