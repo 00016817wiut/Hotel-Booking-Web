@@ -1,0 +1,130 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(640px, 86vh, 840px);
+  background: url("../../assets/images/uzbekistan-009266ded79fabfcb4.62944021.jpg") no-repeat center/cover;
+
+
+  display: flex;
+  flex-direction: column;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.35) 55%, rgba(0, 0, 0, 0.25) 100%);
+}
+
+.hero__container {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(86px, 12vh, 140px);
+  padding-bottom: 160px;
+}
+
+.hero__content {
+  padding: 20px 0;
+  max-width: 760px;
+  color: #fff;
+  margin-bottom: 50px;
+
+}
+
+.hero__badge {
+  display: inline-block;
+  padding: 10px 16px;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.hero__title {
+  margin-top: 22px;
+  font-family: "Merriweather", serif;
+  font-size: clamp(3rem, 5.4vw, 5.2rem);
+  line-height: 1.03;
+  letter-spacing: -0.01em;
+}
+
+.hero__descr {
+  margin-top: 18px;
+  max-width: 68ch;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero__actions {
+  margin-top: 26px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hero__button {
+  padding: 12px 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.hero__button--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.hero__button--primary:hover {
+  background: var(--color-accent);
+}
+
+.hero__button--outline {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+
+.hero__button--outline:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border: 1px solid var(--color-accent);
+}
+
+.hero__booking-bar {
+  margin-top: auto;
+  width: 100%;
+  padding-bottom: 28px;
+}
+
+.hero__booking-bar .booking-search--bar {
+  border-top: 4px solid var(--color-primary);
+}
+
+@media (max-width: 900px) {
+  .hero__container {
+    padding-bottom: 280px;
+  }
+  .hero {
+    min-height: 100vh;
+  }
+
+}
+
+@media (max-width: 560px) {
+  .hero__badge {
+    padding: 8px 12px;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero__button {
+    width: 100%;
+    text-align: center;
+  }
+}

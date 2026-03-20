@@ -1,4 +1,4 @@
-import Header from './components/Header/Header';
+import Hero from './components/Hero/Hero';
 import Main from './pages/Main/Main';
 
 
@@ -6,7 +6,7 @@ const App = () => {
 
   return (
     <>
-      <Header/>
+      <Hero/>
       <Main/>   
     </>
   )

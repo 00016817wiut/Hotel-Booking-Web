@@ -1,89 +1,128 @@
-  import room1 from "../../../assets/images/room1.png";
-  import room2 from "../../../assets/images/room2.png";
-  import room3 from "../../../assets/images/room3.png";
+import room1 from "../../../assets/images/room1.png";
+import room2 from "../../../assets/images/room2.png";
+import room3 from "../../../assets/images/room3.png";
   
-  const roomsInfo = [
-    {
-      id: 1,
-      image: room1,
-      title: "Deluxe Contrast Room",
-      size: "52 sqm",
-      beds: "2 Bed",
-      bath: "1 Bathroom",
-      price: "$200"
-    },
-    {
-      id: 2,
-      image: room2,
-      title: "Luxery Twin Room",
-      size: "52 sqm",
-      beds: "2 Bed",
-      bath: "1 Bathroom",
-      price: "$250"
-    },
-    {
-      id: 3,
-      image: room3,
-      title: "Single Contrast Room",
-      size: "52 sqm",
-      beds: "1 Bed",
-      bath: "1 Bathroom",
-      price: "$200"
-    },
-    {
-      id: 4,
-      image: room1,
-      title: "Deluxe Contrast Room",
-      size: "52 sqm",
-      beds: "2 Bed",
-      bath: "1 Bathroom",
-      price: "$200"
-    },
-    {
-      id: 5,
-      image: room2,
-      title: "Luxery Twin Room",
-      size: "52 sqm",
-      beds: "2 Bed",
-      bath: "1 Bathroom",
-      price: "$250"
-    },
-    {
-      id: 6,
-      image: room3,
-      title: "Single Contrast Room",
-      size: "52 sqm",
-      beds: "1 Bed",
-      bath: "1 Bathroom",
-      price: "$200"
-    },
-    {
-      id: 7,
-      image: room1,
-      title: "Deluxe Contrast Room",
-      size: "52 sqm",
-      beds: "2 Bed",
-      bath: "1 Bathroom",
-      price: "$200"
-    },
-    {
-      id: 8,
-      image: room2,
-      title: "Luxery Twin Room",
-      size: "52 sqm",
-      beds: "2 Bed",
-      bath: "1 Bathroom",
-      price: "$250"
-    },
-    {
-      id: 9,
-      image: room3,
-      title: "Single Contrast Room",
-      size: "52 sqm",
-      beds: "1 Bed",
-      bath: "1 Bathroom",
-      price: "$200"
-    }
-  ];
+const roomsInfo = [
+  {
+    id: 1,
+    image: room1,
+    title: "Deluxe Contrast Room",
+    size: "52 sqm",
+    beds: "2 Bed",
+    bath: "1 Bathroom",
+    price: "$200",
+    pricePerNight: 200,
+    capacity: 2,
+    type: "Deluxe",
+    booked: [
+      { from: "2026-03-20", to: "2026-03-23" },
+      { from: "2026-04-02", to: "2026-04-04" },
+    ],
+  },
+  {
+    id: 2,
+    image: room2,
+    title: "Luxury Twin Room",
+    size: "52 sqm",
+    beds: "2 Bed",
+    bath: "1 Bathroom",
+    price: "$250",
+    pricePerNight: 250,
+    capacity: 2,
+    type: "Twin",
+    booked: [{ from: "2026-03-28", to: "2026-03-31" }],
+  },
+  {
+    id: 3,
+    image: room3,
+    title: "Single Comfort Room",
+    size: "34 sqm",
+    beds: "1 Bed",
+    bath: "1 Bathroom",
+    price: "$160",
+    pricePerNight: 160,
+    capacity: 1,
+    type: "Single",
+    booked: [{ from: "2026-03-19", to: "2026-03-21" }],
+  },
+  {
+    id: 4,
+    image: room1,
+    title: "Deluxe City View",
+    size: "55 sqm",
+    beds: "2 Bed",
+    bath: "1 Bathroom",
+    price: "$220",
+    pricePerNight: 220,
+    capacity: 3,
+    type: "Deluxe",
+    booked: [{ from: "2026-03-24", to: "2026-03-27" }],
+  },
+  {
+    id: 5,
+    image: room2,
+    title: "Twin Room",
+    size: "44 sqm",
+    beds: "2 Bed",
+    bath: "1 Bathroom",
+    price: "$210",
+    pricePerNight: 210,
+    capacity: 2,
+    type: "Twin",
+    booked: [],
+  },
+  {
+    id: 6,
+    image: room3,
+    title: "Single Classic",
+    size: "30 sqm",
+    beds: "1 Bed",
+    bath: "1 Bathroom",
+    price: "$140",
+    pricePerNight: 140,
+    capacity: 1,
+    type: "Single",
+    booked: [{ from: "2026-04-01", to: "2026-04-05" }],
+  },
+  {
+    id: 7,
+    image: room1,
+    title: "Deluxe Family",
+    size: "60 sqm",
+    beds: "2 Bed",
+    bath: "1 Bathroom",
+    price: "$280",
+    pricePerNight: 280,
+    capacity: 4,
+    type: "Family",
+    booked: [{ from: "2026-03-21", to: "2026-03-24" }],
+  },
+  {
+    id: 8,
+    image: room2,
+    title: "Premium Twin",
+    size: "48 sqm",
+    beds: "2 Bed",
+    bath: "1 Bathroom",
+    price: "$240",
+    pricePerNight: 240,
+    capacity: 3,
+    type: "Twin",
+    booked: [{ from: "2026-03-18", to: "2026-03-20" }],
+  },
+  {
+    id: 9,
+    image: room3,
+    title: "Single Budget",
+    size: "28 sqm",
+    beds: "1 Bed",
+    bath: "1 Bathroom",
+    price: "$120",
+    pricePerNight: 120,
+    capacity: 1,
+    type: "Single",
+    booked: [],
+  },
+];
 
-  export default roomsInfo;
+export default roomsInfo;

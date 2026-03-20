@@ -13,6 +13,9 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound.jsx";
 import PrivacyPolicy from "./components/PrivacyPolicy/Privacy.jsx";
 import TermsOfService from "./components/TermsOfService/TermsOfService.jsx";
 import Layout from "./components/Layout/Layout.jsx";
+import AuthProvider from "./auth/AuthProvider.jsx";
+import Login from "./pages/Auth/Login.jsx";
+import Register from "./pages/Auth/Register.jsx";
 import "./assets/fonts/fonts.css";
 import "./assets/styles/root.css";
 import "./assets/styles/common.css";
@@ -27,6 +30,8 @@ const router = createBrowserRouter([
       { path: "room/:id", element: <RoomDetails /> }, 
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms-of-service", element: <TermsOfService /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
       { path: "*", element: <PageNotFound /> }, 
     ],
   },
@@ -34,6 +39,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>
 );

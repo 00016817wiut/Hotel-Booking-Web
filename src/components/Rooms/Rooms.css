@@ -26,6 +26,46 @@
   gap: 20px;
 }
 
+.rooms__search {
+  margin: 18px 0 22px;
+}
+
+.rooms__footer {
+  margin-top: 22px;
+  display: flex;
+  justify-content: center;
+}
+
+.rooms__clear {
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+  color: var(--color-primary-strong);
+  cursor: pointer;
+}
+
+.rooms__empty {
+  margin-top: 22px;
+  text-align: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: #ffffff;
+  box-shadow: var(--color-shadow);
+  padding: 18px;
+}
+
+.rooms__empty h2 {
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-subheading);
+}
+
+.rooms__empty p {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+}
+
 .rooms__body-item {
   border-radius: var(--radius-md);
   overflow: hidden;

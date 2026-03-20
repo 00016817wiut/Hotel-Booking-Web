@@ -1,9 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import roomsInfo from "./data/roomsInfo.js";
 import "./RoomDetails.css";
 
 const RoomDetails = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const backToRooms = location.search ? `/rooms${location.search}` : "/rooms";
   const room = roomsInfo.find((item) => String(item.id) === id);
 
   if (!room) {
@@ -11,7 +13,7 @@ const RoomDetails = () => {
       <section className="room-details room-details--missing content">
         <h1>Room not found</h1>
         <p>The selected room does not exist or has been removed.</p>
-        <Link to="/rooms" className="room-details__button">
+        <Link to={backToRooms} className="room-details__button">
           Back to rooms
         </Link>
       </section>
@@ -41,10 +43,10 @@ const RoomDetails = () => {
           </p>
 
           <div className="room-details__actions">
-            <a href="/#book" className="room-details__button">
+            <a href="/#contact" className="room-details__button">
               Request booking
             </a>
-            <Link to="/rooms" className="room-details__link">
+            <Link to={backToRooms} className="room-details__link">
               View all rooms
             </Link>
           </div>

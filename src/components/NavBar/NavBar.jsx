@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext.jsx";
 import logo from "../../assets/icons/logo.jpg";
 import "./NavBar.css";
 import "./NavBarMenu.css";
@@ -21,7 +22,7 @@ const sectionLinks = [
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate()
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const isReload = performance.getEntriesByType("navigation")[0].type === "reload"
@@ -42,7 +43,7 @@ const NavBar = () => {
         window.scrollTo(0, 0)
       }
     }
-  }, [location, navigate])
+  }, [location])
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -91,11 +92,19 @@ const NavBar = () => {
             <a className="nav__book-button" href="/#contact">
               Book now
             </a>
-            <select name="lang" id="lang" aria-label="Choose language">
-              <option value="english">English</option>
-              <option value="russian">Russian</option>
-              <option value="uzbek">Uzbek</option>
-            </select>
+
+            {user ? (
+              <button type="button" className="nav__auth" onClick={logout}>
+                Logout
+              </button>
+            ) : (
+              <Link
+                className="nav__auth"
+                to={`/login?next=${encodeURIComponent(location.pathname + location.search + location.hash)}`}
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           <div className="nav__menu">
@@ -159,11 +168,27 @@ const NavBar = () => {
             <a className="nav__book-button" href="/#contact" onClick={closeMenu}>
               Book now
             </a>
-            <select name="lang-mobile" id="lang-mobile" aria-label="Choose language">
-              <option value="english">English</option>
-              <option value="russian">Russian</option>
-              <option value="uzbek">Uzbek</option>
-            </select>
+
+            {user ? (
+              <button
+                type="button"
+                className="nav__auth"
+                onClick={() => {
+                  logout();
+                  closeMenu();
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                className="nav__auth"
+                to={`/login?next=${encodeURIComponent(location.pathname + location.search + location.hash)}`}
+                onClick={closeMenu}
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
