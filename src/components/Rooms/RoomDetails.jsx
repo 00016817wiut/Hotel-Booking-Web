@@ -83,7 +83,10 @@ const RoomDetails = () => {
         </div>
 
         <div className="room-details__info">
-          <p className="room-details__badge">Room #{room.id}</p>
+          <p className="room-details__badge">
+            {room.type}
+            {room.roomNumber ? ` · #${room.roomNumber}` : ""}
+          </p>
           <h1>{room.title}</h1>
           <p>
             A spacious and elegant setup for guests who value comfort, natural lighting, and practical amenities for short or extended stays.
