@@ -66,12 +66,12 @@ const Rooms = () => {
 
         <div className="rooms__body">
           {filteredRooms.map((room) => (
-            <div className="rooms__body-item" key={room.id}>
-              <Link to={`/room/${room.id}?${searchParams.toString()}`}>
-                <div className="room__image">
-                  <img src={room.image} alt={room.title} />
-                </div>
-              </Link>
+            <Link to={`/room/${room.id}?${searchParams.toString()}`} className="rooms__body-item" key={room.id}>
+
+              <div className="room__image">
+                <img src={room.image} alt={room.title} />
+              </div>
+
               <div className="room__info">
                 <h1>{room.title}</h1>
                 <ul>
@@ -89,7 +89,7 @@ const Rooms = () => {
                   <span>{room.price}</span>/Night
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

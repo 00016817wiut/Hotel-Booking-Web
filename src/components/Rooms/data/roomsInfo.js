@@ -14,6 +14,7 @@ const roomsInfo = [
     pricePerNight: 200,
     capacity: 2,
     type: "Deluxe",
+    gallery: [room1, room2, room3],
     booked: [
       { from: "2026-03-20", to: "2026-03-23" },
       { from: "2026-04-02", to: "2026-04-04" },
@@ -30,6 +31,7 @@ const roomsInfo = [
     pricePerNight: 250,
     capacity: 2,
     type: "Twin",
+    gallery: [room2, room1, room3],
     booked: [{ from: "2026-03-28", to: "2026-03-31" }],
   },
   {
@@ -43,6 +45,7 @@ const roomsInfo = [
     pricePerNight: 160,
     capacity: 1,
     type: "Single",
+    gallery: [room3, room1, room2],
     booked: [{ from: "2026-03-19", to: "2026-03-21" }],
   },
   {
@@ -56,6 +59,7 @@ const roomsInfo = [
     pricePerNight: 220,
     capacity: 3,
     type: "Deluxe",
+    gallery: [room1, room3, room2],
     booked: [{ from: "2026-03-24", to: "2026-03-27" }],
   },
   {
@@ -69,6 +73,7 @@ const roomsInfo = [
     pricePerNight: 210,
     capacity: 2,
     type: "Twin",
+    gallery: [room2, room3, room1],
     booked: [],
   },
   {
@@ -82,6 +87,7 @@ const roomsInfo = [
     pricePerNight: 140,
     capacity: 1,
     type: "Single",
+    gallery: [room3, room2, room1],
     booked: [{ from: "2026-04-01", to: "2026-04-05" }],
   },
   {
@@ -95,6 +101,7 @@ const roomsInfo = [
     pricePerNight: 280,
     capacity: 4,
     type: "Family",
+    gallery: [room1, room2, room3],
     booked: [{ from: "2026-03-21", to: "2026-03-24" }],
   },
   {
@@ -108,6 +115,7 @@ const roomsInfo = [
     pricePerNight: 240,
     capacity: 3,
     type: "Twin",
+    gallery: [room2, room1, room3],
     booked: [{ from: "2026-03-18", to: "2026-03-20" }],
   },
   {
@@ -121,6 +129,7 @@ const roomsInfo = [
     pricePerNight: 120,
     capacity: 1,
     type: "Single",
+    gallery: [room3, room1, room2],
     booked: [],
   },
 ];

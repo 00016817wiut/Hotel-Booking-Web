@@ -3,7 +3,7 @@
 }
 
 .auth-card {
-  max-width: 520px;
+  max-width: 520px !important;
   margin: 0 auto;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);

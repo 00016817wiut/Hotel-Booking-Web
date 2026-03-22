@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import "./Auth.css";
 
@@ -11,22 +12,21 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const submit = (e) => {
     e.preventDefault();
-    setError("");
     const res = login({ email, password });
     if (!res.ok) {
-      setError(res.message || "Login failed.");
+      toast.error(res.message || "Login failed.");
       return;
     }
+    toast.success("Signed in successfully.");
     navigate(next);
   };
 
   return (
     <section className="auth-page">
-      <div className="auth-card content">
+      <div className="auth-card">
         <h1>Login</h1>
         <p>Sign in to continue booking and save your preferences.</p>
 
@@ -46,7 +46,6 @@ const Login = () => {
             <Link to={`/register?next=${encodeURIComponent(next)}`}>Create an account</Link>
           </div>
 
-          {error ? <p className="auth-error">{error}</p> : null}
         </form>
       </div>
     </section>

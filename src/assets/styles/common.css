@@ -44,6 +44,14 @@ img {
   display: block;
 }
 
+/* Fancybox: slightly larger initial image appearance */
+.fancybox__container img.fancybox__image,
+.fancybox__container img.fancybox-image,
+.fancybox__container .fancybox__content img {
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
 .content {
   max-width: var(--content-max);
   width: 100%;

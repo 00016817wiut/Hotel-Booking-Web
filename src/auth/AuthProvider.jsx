@@ -26,24 +26,34 @@ const AuthProvider = ({ children }) => {
     setUser(current);
   }, []);
 
-  const register = useCallback(({ name, email, password }) => {
+  const register = useCallback(({ name, firstName, lastName, email, phone, password }) => {
     const users = readJSON(USERS_KEY, []);
     const exists = users.some((u) => String(u.email).toLowerCase() === String(email).toLowerCase());
     if (exists) {
       return { ok: false, message: "User already exists." };
     }
 
+    const fullName = name || [firstName, lastName].filter(Boolean).join(" ").trim() || "Guest";
+
     const newUser = {
       id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      name,
+      name: fullName,
+      firstName: firstName || "",
+      lastName: lastName || "",
       email,
+      phone: phone || "",
       password,
     };
 
     users.push(newUser);
     writeJSON(USERS_KEY, users);
 
-    const safeUser = { id: newUser.id, name: newUser.name, email: newUser.email };
+    const safeUser = {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      ...(newUser.phone ? { phone: newUser.phone } : {}),
+    };
     writeJSON(CURRENT_KEY, safeUser);
     setUser(safeUser);
 
