@@ -1,0 +1,174 @@
+.account-page__header h1 {
+  margin: 0;
+  font-family: var(--font-family);
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-subheading);
+}
+
+.account-page__header p {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+}
+
+.account-page__card {
+  margin-top: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: var(--color-shadow);
+  padding: 20px;
+}
+
+.account-page__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.account-page__label {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  width: 60px;
+}
+
+.account-page__value {
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+.account-form {
+  display: grid;
+  gap: 12px;
+}
+
+.account-form__field {
+  display: grid;
+  gap: 6px;
+}
+
+.account-form__field span {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.account-form__field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  color: var(--color-text);
+  outline-color: var(--color-primary);
+}
+
+.account-form__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.account-form__actions button {
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+  color: #fff;
+  cursor: pointer;
+}
+
+.account-form__actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.account-page__muted {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.booking-list {
+  display: grid;
+  gap: 12px;
+}
+
+.booking-item {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 12px;
+  background: #ffffff;
+}
+
+.booking-item__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.booking-item__title {
+  font-weight: 800;
+  color: var(--color-primary-strong);
+}
+
+.booking-item__status {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  background: #fff;
+  text-transform: capitalize;
+}
+
+.booking-item__status--confirmed,
+.booking-item__status--checked_in {
+  border-color: rgba(31, 157, 85, 0.35);
+  background: rgba(31, 157, 85, 0.10);
+}
+
+.booking-item__status--pending {
+  border-color: rgba(179, 32, 42, 0.25);
+  background: rgba(179, 32, 42, 0.08);
+}
+
+.booking-item__status--cancelled {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.booking-item__meta {
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+  color: var(--color-text-muted);
+}
+
+.account-empty h2 {
+  margin: 0;
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-subheading);
+}
+
+.account-empty p {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+}
+
+.logout-row {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
+.logout-button {
+  margin-top: 60px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-family: var(--third-family);
+  font-size: 0.92rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-strong));
+  box-shadow: var(--color-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}

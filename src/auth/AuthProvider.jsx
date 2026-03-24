@@ -1,85 +1,152 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AuthContext } from "./AuthContext.jsx";
+import { supabase } from "../lib/supabaseClient.js";
 
-const USERS_KEY = "anor_users";
-const CURRENT_KEY = "anor_auth_user";
-
-const readJSON = (key, fallback) => {
-  try {
-    const raw = localStorage.getItem(key);
-    if (!raw) return fallback;
-    return JSON.parse(raw);
-  } catch {
-    return fallback;
-  }
-};
-
-const writeJSON = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [session, setSession] = useState(null)
+  const [profile, setProfile] = useState(null)
+  const [profileLoading, setProfileLoading] = useState(false)
+  const [authReady, setAuthReady] = useState(false)
 
+  const userIdRef = useRef(null)
+
+  // Session
   useEffect(() => {
-    const current = readJSON(CURRENT_KEY, null);
-    setUser(current);
-  }, []);
+    let alive = true;
 
-  const register = useCallback(({ name, firstName, lastName, email, phone, password }) => {
-    const users = readJSON(USERS_KEY, []);
-    const exists = users.some((u) => String(u.email).toLowerCase() === String(email).toLowerCase());
-    if (exists) {
-      return { ok: false, message: "User already exists." };
+    const init = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (!alive) return;
+
+      if (error) {
+        setSession(null)
+        setProfile(null)
+        setProfileLoading(false)
+        userIdRef.current = null
+        setAuthReady(true)
+        return;
+      }
+
+      const nextSession = data.session ?? null
+      userIdRef.current = nextSession?.user?.id ?? null
+      setSession(nextSession);
+      setAuthReady(true)
     }
+    init();
 
-    const fullName = name || [firstName, lastName].filter(Boolean).join(" ").trim() || "Guest";
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (!alive) return;
 
-    const newUser = {
-      id: crypto?.randomUUID ? crypto.randomUUID() : String(Date.now()),
-      name: fullName,
-      firstName: firstName || "",
-      lastName: lastName || "",
+      const nextId = nextSession?.user?.id ?? null
+      const prevId = userIdRef.current
+      userIdRef.current = nextId
+
+      setSession(nextSession ?? null);
+
+      // Keep cached profile on token refresh; only clear on user change/sign out
+      if (!nextId || nextId !== prevId) {
+        setProfile(null)
+      }
+      setAuthReady(true);
+    })
+
+    return () => {
+      alive = false;
+      sub?.subscription?.unsubscribe?.();
+    }
+  }, [])
+
+  // Load profile
+  useEffect(() => {
+    let alive = true;
+
+    const loadProfile = async () => {
+      const authUser = session?.user;
+
+      if (!authUser) {
+        setProfile(null)
+        setProfileLoading(false)
+        return;
+      }
+
+      setProfileLoading(true)
+
+      const { data, error } = await supabase
+        .from("Users")
+        .select("*")
+        .eq("auth_id", authUser.id)
+        .maybeSingle();
+
+      if (!alive) return;
+      if (error) {
+        // Avoid dropping admin UI on transient errors; keep last known profile
+        setProfile((prev) => prev)
+        setProfileLoading(false)
+        return;
+      }
+
+      setProfile(data ?? null)
+      setProfileLoading(false)
+    }
+    loadProfile();
+    return () => {
+      alive = false;
+    }
+  }, [session?.user?.id])
+
+  // Register user
+  const register = useCallback(async ({ firstName, lastName, email, phone, password }) => {
+    const { data, error } = await supabase.auth.signUp({
       email,
-      phone: phone || "",
       password,
-    };
+      options: {
+        data: {
+          first_name: firstName || null,
+          last_name: lastName || null,
+          phone: phone || null,
+        }
+      }
+    })
+    if (error) return { ok: false, message: error.message };
 
-    users.push(newUser);
-    writeJSON(USERS_KEY, users);
-
-    const safeUser = {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-      ...(newUser.phone ? { phone: newUser.phone } : {}),
-    };
-    writeJSON(CURRENT_KEY, safeUser);
-    setUser(safeUser);
-
-    return { ok: true };
-  }, []);
-
-  const login = useCallback(({ email, password }) => {
-    const users = readJSON(USERS_KEY, []);
-    const found = users.find((u) => String(u.email).toLowerCase() === String(email).toLowerCase());
-    if (!found || found.password !== password) {
-      return { ok: false, message: "Invalid email or password." };
+    // with email confirmation On, session is usally null here
+    if (!data.session) {
+      return {
+        ok: true, needsEmailConfirm: true,
+      };
     }
 
-    const safeUser = { id: found.id, name: found.name, email: found.email };
-    writeJSON(CURRENT_KEY, safeUser);
-    setUser(safeUser);
     return { ok: true };
-  }, []);
+  }, [])
 
-  const logout = useCallback(() => {
-    localStorage.removeItem(CURRENT_KEY);
-    setUser(null);
-  }, []);
 
-  const value = useMemo(() => ({ user, register, login, logout }), [user, register, login, logout]);
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  // Login
+  const login = useCallback(async ({email, password}) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { ok: false, message: error.message }
+    if (!data.session) return { ok: false, message: "No session returned." }
+    return { ok: true }
+  }, [])
+
+  // Logout
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+  }, [])
+
+  // User session info
+  const user = session?.user ? {
+    id: session.user.id,
+    email: session.user.email,
+    profile,
+  }
+    : null;
+
+  const value = useMemo(
+    () => ({ user, session, profile, profileLoading, authReady, register, login, logout }),
+    [user, session, profile, profileLoading, authReady, register, login, logout]
+  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 };
 
 export default AuthProvider;

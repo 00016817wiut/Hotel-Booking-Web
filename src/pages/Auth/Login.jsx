@@ -13,9 +13,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    const res = login({ email, password });
+    const res = await login({ email, password });
     if (!res.ok) {
       toast.error(res.message || "Login failed.");
       return;
@@ -33,12 +33,12 @@ const Login = () => {
         <form className="auth-form" onSubmit={submit}>
           <label className="auth-field">
             <span>Email</span>
-            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
+            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required autoComplete="email"/>
           </label>
 
           <label className="auth-field">
             <span>Password</span>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required autoComplete="current-password"/>
           </label>
 
           <div className="auth-actions">

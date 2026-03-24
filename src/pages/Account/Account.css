@@ -1,0 +1,76 @@
+.account {
+  padding: clamp(42px, 6vw, 72px) 0 clamp(70px, 10vw, 120px);
+  background: #fff;
+}
+
+.account__container {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.account__sidebar {
+  padding: 14px;
+  position: sticky;
+  top: 92px;
+}
+
+.account__title {
+  font-family: var(--font-family);
+  font-weight: 800;
+  color: var(--color-primary-strong);
+  letter-spacing: 0.01em;
+  margin-bottom: 10px;
+}
+
+.account__nav {
+  display: grid;
+}
+.account_title {
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--color-primary-strong);
+}
+.account__link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  color: var(--color-text);
+  background: #ffffff;
+}
+
+.account__link:hover {
+  border-color: rgba(179, 32, 42, 0.25);
+  background: rgba(179, 32, 42, 0.06);
+}
+
+.account__link--active {
+  border-color: rgba(179, 32, 42, 0.45);
+  background: rgba(179, 32, 42, 0.10);
+  color: var(--color-primary-strong);
+  font-weight: 700;
+}
+
+.account__main {
+  background: #f1f1f137;
+  padding: 16px;
+}
+
+@media (max-width: 900px) {
+  .account__container {
+    grid-template-columns: 1fr;
+  }
+
+  .account__sidebar {
+    position: static;
+  }
+
+  .account__nav {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(160px, 1fr);
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+}

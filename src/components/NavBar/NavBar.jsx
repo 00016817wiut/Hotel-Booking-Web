@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import logo from "../../assets/icons/logo.jpg";
+import profile from "../../assets/icons/profile.svg"
 import "./NavBar.css";
 import "./NavBarMenu.css";
 
@@ -22,7 +23,7 @@ const sectionLinks = [
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const isReload = performance.getEntriesByType("navigation")[0].type === "reload"
@@ -38,7 +39,7 @@ const NavBar = () => {
           el.scrollIntoView({ behavior: "smooth" })
         }
       }
-      
+
       if (location.pathname === "/rooms") {
         window.scrollTo(0, 0)
       }
@@ -93,11 +94,7 @@ const NavBar = () => {
               Book now
             </a>
 
-            {user ? (
-              <button type="button" className="nav__auth" onClick={logout}>
-                Logout
-              </button>
-            ) : (
+            {!user && (
               <Link
                 className="nav__auth"
                 to={`/login?next=${encodeURIComponent(location.pathname + location.search + location.hash)}`}
@@ -105,6 +102,17 @@ const NavBar = () => {
                 Login
               </Link>
             )}
+            {user &&
+              <Link to={`/account`}>
+                <img src={profile} alt="" width={25} />
+              </Link>
+            }
+            {user?.profile && String(user.profile.role).toLowerCase() === "admin" ? (
+              <Link to="/admin/bookings" className="nav__auth">
+                Admin
+              </Link>
+            ) : null}
+
           </div>
 
           <div className="nav__menu">
@@ -139,6 +147,24 @@ const NavBar = () => {
           </div>
 
           <ul className="nav__menu-list">
+            {user &&
+              <li key="mobile-account">
+                <NavLink to={`/account`}
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "nav__list-item-menu nav__list-item-menu--active"
+                      : "nav__list-item-menu"
+                  }>
+                  Profile
+                </NavLink>
+              </li>
+            }
+            {user?.profile && String(user.profile.role).toLowerCase() === "admin" ? (
+              <NavLink to="/admin/bookings" className="nav__auth">
+                Admin
+              </NavLink>
+            ) : null}
             {routeLinks.map((link) => (
               <li key={`mobile-${link.to}`}>
                 <NavLink
@@ -169,18 +195,7 @@ const NavBar = () => {
               Book now
             </a>
 
-            {user ? (
-              <button
-                type="button"
-                className="nav__auth"
-                onClick={() => {
-                  logout();
-                  closeMenu();
-                }}
-              >
-                Logout
-              </button>
-            ) : (
+            {!user && (
               <Link
                 className="nav__auth"
                 to={`/login?next=${encodeURIComponent(location.pathname + location.search + location.hash)}`}

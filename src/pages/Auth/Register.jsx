@@ -29,7 +29,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
 
     const pw = validatePassword(password);
@@ -43,9 +43,15 @@ const Register = () => {
       return;
     }
 
-    const res = register({ firstName, lastName, email, phone, password });
+    const res = await register({ firstName, lastName, email, phone, password });
     if (!res.ok) {
       toast.error(res.message || "Registration failed.");
+      return;
+    }
+
+    if (res.needsEmailConfirm) {
+      toast.success("Check your email to confirm your account, then sign in.");
+      navigate(`/login?next=${encodeURIComponent(next)}`)
       return;
     }
 
@@ -62,27 +68,27 @@ const Register = () => {
         <form className="auth-form" onSubmit={submit}>
           <label className="auth-field">
             <span>First Name*</span>
-            <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" required />
+            <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" required autoComplete="given-name" />
           </label>
 
           <label className="auth-field">
             <span>Last Name*</span>
-            <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" required />
+            <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" required autoComplete="family-name"/>
           </label>
 
           <label className="auth-field">
             <span>Email*</span>
-            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
+            <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required autoComplete="email"/>
           </label>
 
           <label className="auth-field">
             <span>Phone</span>
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" inputMode="tel" />
+            <input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" inputMode="tel"  autoComplete="tel"/>
           </label>
 
           <label className="auth-field">
             <span>Password*</span>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required autoComplete="new-password"/>
           </label>
 
           <label className="auth-field">
@@ -92,6 +98,7 @@ const Register = () => {
               onChange={(e) => setRepeatPassword(e.target.value)}
               type="password"
               required
+              autoComplete="new-password"
             />
           </label>
 
