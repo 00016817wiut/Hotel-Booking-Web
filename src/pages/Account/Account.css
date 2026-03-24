@@ -27,11 +27,13 @@
 .account__nav {
   display: grid;
 }
+
 .account_title {
   font-weight: 600;
   font-size: 26px;
   color: var(--color-primary-strong);
 }
+
 .account__link {
   display: block;
   padding: 10px 12px;
@@ -56,6 +58,16 @@
 .account__main {
   background: #f1f1f137;
   padding: 16px;
+}
+
+/* Add to existing Account.css */
+.account__divider {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 14px 12px 4px;
 }
 
 @media (max-width: 900px) {

@@ -160,6 +160,7 @@
   display: flex;
   justify-content: right;
 }
+
 .logout-button {
   margin-top: 60px;
   padding: 10px 18px;
@@ -171,4 +172,170 @@
   box-shadow: var(--color-shadow);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
+}
+
+/* Add to existing AccountPages.css */
+.account-page__section {
+  margin-top: 14px;
+}
+
+.account-page__section-title {
+  margin: 0 0 10px;
+  font-family: var(--font-family);
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-subheading);
+}
+
+.account-page__danger {
+  border-color: rgba(179, 32, 42, 0.2);
+  background: rgba(179, 32, 42, 0.04);
+}
+
+.account-page__logout {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid rgba(179, 32, 42, 0.3);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--color-primary-strong);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.account-page__logout:hover {
+  background: rgba(179, 32, 42, 0.08);
+}
+
+.account-page__code {
+  margin-top: 14px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  overflow: auto;
+  font-size: 0.85rem;
+}
+
+/* Admin overview stats */
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.admin-stat {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 16px;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-stat:hover {
+  border-color: rgba(179, 32, 42, 0.4);
+  box-shadow: 0 8px 20px -16px rgba(127, 20, 27, 0.5);
+}
+
+.admin-stat__number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-strong);
+  line-height: 1;
+}
+
+.admin-stat__label {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+/* Role badge */
+.role-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #fff;
+  color: var(--color-text);
+}
+
+.role-badge--admin {
+  border-color: rgba(179, 32, 42, 0.35);
+  background: rgba(179, 32, 42, 0.08);
+  color: var(--color-primary-strong);
+}
+
+/* User list */
+.user-list {
+  display: grid;
+  gap: 12px;
+}
+
+.user-item {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.user-item__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.user-item__email {
+  font-weight: 700;
+  color: var(--color-primary-strong);
+}
+
+.user-item__meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.user-item__role,
+.user-item__active {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  color: var(--color-text-muted);
+}
+
+.user-item__role--admin {
+  border-color: rgba(179, 32, 42, 0.3);
+  background: rgba(179, 32, 42, 0.08);
+  color: var(--color-primary-strong);
+}
+
+.user-item__toggle {
+  min-height: 36px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  color: var(--color-primary-strong);
+  cursor: pointer;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.user-item__toggle:hover {
+  background: rgba(179, 32, 42, 0.06);
+  border-color: rgba(179, 32, 42, 0.3);
 }

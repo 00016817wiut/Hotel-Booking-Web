@@ -107,12 +107,6 @@ const NavBar = () => {
                 <img src={profile} alt="" width={25} />
               </Link>
             }
-            {user?.profile && String(user.profile.role).toLowerCase() === "admin" ? (
-              <Link to="/admin/bookings" className="nav__auth">
-                Admin
-              </Link>
-            ) : null}
-
           </div>
 
           <div className="nav__menu">
@@ -160,11 +154,6 @@ const NavBar = () => {
                 </NavLink>
               </li>
             }
-            {user?.profile && String(user.profile.role).toLowerCase() === "admin" ? (
-              <NavLink to="/admin/bookings" className="nav__auth">
-                Admin
-              </NavLink>
-            ) : null}
             {routeLinks.map((link) => (
               <li key={`mobile-${link.to}`}>
                 <NavLink

@@ -1,24 +1,48 @@
-import { useMemo, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../auth/AuthContext";
+import { supabase } from "../../lib/supabaseClient";
 import "./AccountPages.css";
 
 const AccountInfo = () => {
   const { user, profile, logout } = useAuth();
+  const navigate = useNavigate();
+  const isAdmin = String(profile?.role || "").toLowerCase() === "admin";
 
-  const initial = useMemo(() => {
-    return {
-      first_name: profile?.first_name ?? "",
-      last_name: profile?.last_name ?? "",
-      phone: profile?.phone ?? "",
-    }
-  }, [profile?.first_name, profile?.last_name, profile?.phone])
+  const [stats, setStats] = useState({ bookings: 0, users: 0 });
 
-  const [firstName, setFirstName] = useState(initial.first_name);
-  const [lastName, setLastName] = useState(initial.last_name);
-  const [phone, setPhone] = useState(initial.phone);
+  useEffect(() => {
+    if (!isAdmin) return;
+    let alive = true;
+
+    const load = async () => {
+      const [bookingsRes, usersRes] = await Promise.all([
+        supabase.from("Bookings").select("id", { count: "exact", head: true }),
+        supabase.from("Users").select("id", { count: "exact", head: true }),
+      ]);
+      if (alive) {
+        setStats({
+          bookings: bookingsRes.count ?? 0,
+          users: usersRes.count ?? 0,
+        });
+      }
+    };
+
+    load();
+    return () => { alive = false; };
+  }, [isAdmin]);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setFirstName(profile?.first_name ?? "");
+    setLastName(profile?.last_name ?? "");
+    setPhone(profile?.phone ?? "");
+  }, [profile?.first_name, profile?.last_name, profile?.phone]);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -30,23 +54,26 @@ const AccountInfo = () => {
         first_name: firstName.trim() || null,
         last_name: lastName.trim() || null,
         phone: phone.trim() || null,
-      }
+      };
 
-      const { error } = await supabase.from("Users").update(patch).eq("auth_id", user.id);
+      const { error } = await supabase
+        .from("Users")
+        .update(patch)
+        .eq("auth_id", user.id);
+
       if (error) throw error;
-
       toast.success("Profile updated.");
     } catch (err) {
-      toast.error(err?.message || "Failed to update profile.")
+      toast.error(err?.message || "Failed to update profile.");
     } finally {
       setSaving(false);
     }
-  }
+  };
 
   const onLogout = async () => {
     await logout();
-    toast.success("Logged out")
-  }
+    navigate("/");
+  };
 
   return (
     <div className="account-page">
@@ -60,35 +87,84 @@ const AccountInfo = () => {
           <div className="account-page__label">Email</div>
           <div className="account-page__value">{user?.email || "-"}</div>
         </div>
+        {profile?.role === 'admin' &&
+          <div className="account-page__row">
+            <div className="account-page__label">Role</div>
+            <div className="account-page__value">
+              <span className={`role-badge role-badge--${profile?.role || "user"}`}>
+                {profile?.role || "user"}
+              </span>
+            </div>
+          </div>
+        }
       </div>
+
+      {isAdmin && (
+        <div className="account-page__card">
+          <div className="account-page__section-title" style={{ marginBottom: 12 }}>Admin overview</div>
+          <div className="admin-stats">
+            <button
+              type="button"
+              className="admin-stat"
+              onClick={() => navigate("/account/bookings")}
+            >
+              <span className="admin-stat__number">{stats.bookings}</span>
+              <span className="admin-stat__label">Total bookings</span>
+            </button>
+            <button
+              type="button"
+              className="admin-stat"
+              onClick={() => navigate("/account/users")}
+            >
+              <span className="admin-stat__number">{stats.users}</span>
+              <span className="admin-stat__label">Total users</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       <form className="account-page__card account-form" onSubmit={submit}>
         <label className="account-form__field">
           <span>First name</span>
-          <input value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" autoComplete="given-name" />
+          <input
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            type="text"
+            autoComplete="given-name"
+          />
         </label>
-
         <label className="account-form__field">
           <span>Last name</span>
-          <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" autoComplete="family-name" />
+          <input
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            type="text"
+            autoComplete="family-name"
+          />
         </label>
-
         <label className="account-form__field">
           <span>Phone</span>
-          <input value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" autoComplete="tel" />
+          <input
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            type="tel"
+            autoComplete="tel"
+          />
         </label>
-
         <div className="account-form__actions">
           <button type="submit" disabled={saving}>
             {saving ? "Saving..." : "Save changes"}
           </button>
         </div>
       </form>
+
       <div className="logout-row">
-        <button onClick={onLogout} className="logout-button">Log Out</button>
+        <button type="button" onClick={onLogout} className="logout-button">
+          Log out
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AccountInfo
+export default AccountInfo;
