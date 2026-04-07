@@ -1,0 +1,29 @@
+/* Uses modal styles from AccountPages.css; only small overrides here */
+
+.modal--confirm {
+  max-width: 520px;
+}
+
+.confirm__text {
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.btn-danger {
+  min-height: 40px;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #b3202a, #7f141b);
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.btn-danger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}

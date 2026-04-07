@@ -18,6 +18,10 @@ body {
   background: #fff;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 #root {
   min-height: 100vh;
 }

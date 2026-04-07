@@ -8,6 +8,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { uploadRoomMedia } from "../../lib/roomImages";
+import { acquireModalLock, releaseModalLock } from "../../lib/modalLock";
 import "./AccountPages.css";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
@@ -76,6 +77,11 @@ const RoomModal = ({ room, onSave, onClose }) => {
   const [uploads, setUploads] = useState([]);
   const [videoUploads, setVideoUploads] = useState([]);
   const overlayRef = useRef(null);
+
+  useEffect(() => {
+    acquireModalLock();
+    return () => releaseModalLock();
+  }, []);
 
   const set = (field, value) => setForm((f) => ({ ...f, [field]: value }));
 

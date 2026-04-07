@@ -19,6 +19,7 @@ import AccountInfo from "./pages/Account/AccountInfo.jsx";
 import AccountBookings from "./pages/Account/AccountBookings.jsx";
 import AccountRooms from "./pages/Account/AccountRooms.jsx";
 import AccountUsers from "./pages/Account/AccountUsers.jsx";
+import BookingConfirmation from "./pages/Booking/BookingConfirmation.jsx";
 import "./assets/fonts/fonts.css";
 import "./assets/styles/root.css";
 import "./assets/styles/common.css";
@@ -31,6 +32,14 @@ const router = createBrowserRouter([
       { index: true, element: <App /> },
       { path: "rooms", element: <Rooms /> },
       { path: "room/:id", element: <RoomDetails /> },
+      {
+        path: "booking/confirmation/:bookingId",
+        element: (
+          <RequireAuth>
+            <BookingConfirmation />
+          </RequireAuth>
+        ),
+      },
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms-of-service", element: <TermsOfService /> },
       { path: "login", element: <Login /> },

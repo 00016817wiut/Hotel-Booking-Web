@@ -110,8 +110,13 @@
 
 .rooms__body {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 400px));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
+}
+
+.rooms__body--single {
+  grid-template-columns: min(280px, 100%);
+  justify-content: flex-start;
 }
 
 .rooms__search {

@@ -1,10 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import "./RoomDetails.css";
 import toast from "react-hot-toast";
 import { fetchRoomById } from "../../lib/roomsApi.js";
+import { useAuth } from "../../auth/AuthContext";
+import { createBookingRequest } from "../../lib/bookingsApi.js";
+
+const todayISO = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().slice(0, 10);
+};
+
+const addDaysISO = (isoDate, days) => {
+  const d = new Date(`${isoDate}T00:00:00`);
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+};
 
 const formatMoney = (value, currency = "USD") => {
   const n = Number(value);
@@ -19,13 +33,34 @@ const formatMoney = (value, currency = "USD") => {
 const RoomDetails = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const rootRef = useRef(null);
   const backToRooms = location.search ? `/rooms${location.search}` : "/rooms";
+
+  const { user } = useAuth();
 
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [broken, setBroken] = useState({});
+  const [bookingDraft, setBookingDraft] = useState(() => {
+    const sp = new URLSearchParams(location.search);
+    const base = todayISO();
+    const requestedCheckIn = sp.get("checkIn") || addDaysISO(base, 1);
+    const checkIn = requestedCheckIn < base ? base : requestedCheckIn;
+
+    const requestedCheckOut = sp.get("checkOut") || addDaysISO(base, 2);
+    const minCheckOut = addDaysISO(checkIn, 1);
+    const checkOut = requestedCheckOut <= checkIn ? minCheckOut : requestedCheckOut;
+
+    return {
+      checkIn,
+      checkOut,
+      guests: sp.get("guests") || "2",
+    };
+  });
+  const [specialRequests, setSpecialRequests] = useState("");
+  const [bookingSending, setBookingSending] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -50,6 +85,60 @@ const RoomDetails = () => {
       alive = false;
     };
   }, [id]);
+
+  useEffect(() => {
+    const sp = new URLSearchParams(location.search);
+    const base = todayISO();
+    const requestedCheckIn = sp.get("checkIn") || addDaysISO(base, 1);
+    const checkIn = requestedCheckIn < base ? base : requestedCheckIn;
+
+    const requestedCheckOut = sp.get("checkOut") || addDaysISO(base, 2);
+    const minCheckOut = addDaysISO(checkIn, 1);
+    const checkOut = requestedCheckOut <= checkIn ? minCheckOut : requestedCheckOut;
+
+    setBookingDraft({
+      checkIn,
+      checkOut,
+      guests: sp.get("guests") || "2",
+    });
+  }, [location.search]);
+
+  const minCheckIn = todayISO();
+  const minCheckOut = addDaysISO(bookingDraft.checkIn < minCheckIn ? minCheckIn : bookingDraft.checkIn, 1);
+
+  const updateParams = (nextDraft) => {
+    const next = new URLSearchParams(location.search);
+    next.set("checkIn", nextDraft.checkIn);
+    next.set("checkOut", nextDraft.checkOut);
+    next.set("guests", nextDraft.guests);
+    navigate(`${location.pathname}?${next.toString()}`, { replace: true });
+  };
+
+  const onCheckInChange = (value) => {
+    const nextCheckIn = value && value < minCheckIn ? minCheckIn : value;
+    const nextCheckOut = !bookingDraft.checkOut || bookingDraft.checkOut <= nextCheckIn ? addDaysISO(nextCheckIn, 1) : bookingDraft.checkOut;
+
+    const nextDraft = {
+      ...bookingDraft,
+      checkIn: nextCheckIn,
+      checkOut: nextCheckOut,
+    };
+    setBookingDraft(nextDraft);
+    updateParams(nextDraft);
+  };
+
+  const onCheckOutChange = (value) => {
+    const nextCheckOut = value && value <= bookingDraft.checkIn ? addDaysISO(bookingDraft.checkIn, 1) : value;
+    const nextDraft = { ...bookingDraft, checkOut: nextCheckOut };
+    setBookingDraft(nextDraft);
+    updateParams(nextDraft);
+  };
+
+  const onGuestsChange = (value) => {
+    const nextDraft = { ...bookingDraft, guests: String(value || "2") };
+    setBookingDraft(nextDraft);
+    updateParams(nextDraft);
+  };
 
   const gallery = useMemo(() => {
     const imgs = Array.isArray(room?.images) ? room.images.filter(Boolean) : [];
@@ -169,6 +258,7 @@ const RoomDetails = () => {
                       src={activeSrc}
                       controls
                       preload="metadata"
+                      muted
                       onError={() => setBroken((m) => ({ ...m, [activeSrc]: true }))}
                     />
                   ) : (
@@ -251,10 +341,88 @@ const RoomDetails = () => {
             {formatMoney(room.base_price_per_night, room.currency || "USD")} <span>/ night</span>
           </p>
 
+          <div className="room-details__booking">
+            <div className="room-details__booking-fields" aria-label="Booking details">
+              <label className="room-details__field">
+                <span>Check-in</span>
+                <input
+                  type="date"
+                  value={bookingDraft.checkIn}
+                  min={minCheckIn}
+                  onChange={(e) => onCheckInChange(e.target.value)}
+                />
+              </label>
+
+              <label className="room-details__field">
+                <span>Check-out</span>
+                <input
+                  type="date"
+                  value={bookingDraft.checkOut}
+                  min={minCheckOut}
+                  onChange={(e) => onCheckOutChange(e.target.value)}
+                />
+              </label>
+
+              <label className="room-details__field">
+                <span>Guests</span>
+                <select value={bookingDraft.guests} onChange={(e) => onGuestsChange(e.target.value)}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </label>
+            </div>
+
+            <label className="room-details__requests">
+              <span>Special requests (optional)</span>
+              <textarea
+                value={specialRequests}
+                onChange={(e) => setSpecialRequests(e.target.value)}
+                placeholder="Anything we should know? (Late arrival, extra pillow, etc.)"
+                rows={3}
+              />
+            </label>
+          </div>
+
           <div className="room-details__actions">
-            <a href="/#contact" className="room-details__button">
-              Request booking
-            </a>
+            <button
+              type="button"
+              className="room-details__button"
+              disabled={bookingSending}
+              onClick={async () => {
+                try {
+                  if (!user) {
+                    const next = location.pathname + location.search + location.hash;
+                    navigate(`/login?next=${encodeURIComponent(next)}`);
+                    return;
+                  }
+
+                  if (!bookingDraft.checkIn || !bookingDraft.checkOut) {
+                    toast.error("Select dates first.");
+                    return;
+                  }
+
+                  setBookingSending(true);
+                  const res = await createBookingRequest({
+                    room,
+                    user,
+                    checkIn: bookingDraft.checkIn,
+                    checkOut: bookingDraft.checkOut,
+                    guests: bookingDraft.guests,
+                    specialRequests,
+                  });
+                  toast.success("Booking request sent.");
+                  navigate(`/booking/confirmation/${encodeURIComponent(res.id)}`);
+                } catch (e) {
+                  toast.error(e?.message || "Failed to create booking.");
+                } finally {
+                  setBookingSending(false);
+                }
+              }}
+            >
+              {bookingSending ? "Sending..." : "Request booking"}
+            </button>
             <Link to={backToRooms} className="room-details__link">
               View all rooms
             </Link>

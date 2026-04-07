@@ -138,6 +138,8 @@ const Rooms = () => {
     });
   }, [roomsBase, roomTypeParam, hasGuestFilter, guests]);
 
+  const isSingleResult = filteredRooms.length === 1;
+
   const roomTypeLabel =
     roomTypeParam === "any"
       ? "All room types"
@@ -230,7 +232,7 @@ const Rooms = () => {
               </p>
             </div>
 
-            <div className="rooms__body">
+            <div className={`rooms__body${isSingleResult ? " rooms__body--single" : ""}`}>
               {filteredRooms.map((room) => (
                 <Link to={`/room/${room.id}?${searchParams.toString()}`} className="rooms__body-item" key={room.id}>
                   <div className="room__image">

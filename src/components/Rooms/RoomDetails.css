@@ -204,6 +204,68 @@
   gap: 10px;
 }
 
+.room-details__booking {
+  margin-top: 16px;
+}
+
+.room-details__booking-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.room-details__field {
+  display: grid;
+  gap: 6px;
+}
+
+.room-details__field span {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.room-details__field input,
+.room-details__field select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  color: var(--color-text);
+  outline-color: var(--color-primary);
+  font: inherit;
+}
+
+.room-details__requests {
+  margin-top: 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.room-details__requests span {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.room-details__requests textarea {
+  width: 100%;
+  min-height: 88px;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+  color: var(--color-text);
+  outline-color: var(--color-primary);
+  resize: vertical;
+  font: inherit;
+}
+
+.room-details__button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 
 .room-details__button,
 .room-details__link {
