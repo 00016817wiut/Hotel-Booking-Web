@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import AdminBookingNotifier from "../../components/AdminBookingNotifier/AdminBookingNotifier.jsx";
 import "./Account.css";
 
 const AccountLayout = () => {
@@ -34,6 +35,14 @@ const AccountLayout = () => {
               <>
                 <div className="account__divider">Admin</div>
                 <NavLink
+                  to="/account/dashboard"
+                  className={({ isActive }) =>
+                    isActive ? "account__link account__link--active" : "account__link"
+                  }
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink
                   to="/account/bookings"
                   end
                   className={({ isActive }) =>
@@ -67,6 +76,8 @@ const AccountLayout = () => {
           <Outlet />
         </main>
       </div>
+
+      <AdminBookingNotifier enabled={isAdmin} />
     </section>
   );
 };

@@ -35,6 +35,23 @@ const formatMoney = (value, currency = "USD") => {
   }
 };
 
+const formatDateTime = (value) => {
+  if (!value) return "-";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+  try {
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(d);
+  } catch {
+    return d.toISOString();
+  }
+};
+
 const displayName = (b) => {
   const first = String(b.customer_first_name || "").trim();
   const last = String(b.customer_last_name || "").trim();
@@ -328,6 +345,7 @@ const AccountBookings = () => {
                 </div>
                   <div className="booking-item__meta">
                     <div>User: {displayName(b)}</div>
+                    {b.created_at ? <div>Requested: {formatDateTime(b.created_at)}</div> : null}
                     <div>Check-in: {b.check_in || "-"} → Check-out: {b.check_out || "-"}</div>
                     <div>Guests: {b.guests ?? "-"}</div>
                     <div>

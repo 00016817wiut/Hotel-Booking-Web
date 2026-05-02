@@ -10,29 +10,6 @@ const AccountInfo = () => {
   const navigate = useNavigate();
   const isAdmin = String(profile?.role || "").toLowerCase() === "admin";
 
-  const [stats, setStats] = useState({ bookings: 0, users: 0 });
-
-  useEffect(() => {
-    if (!isAdmin) return;
-    let alive = true;
-
-    const load = async () => {
-      const [bookingsRes, usersRes] = await Promise.all([
-        supabase.from("Bookings").select("id", { count: "exact", head: true }),
-        supabase.from("Users").select("id", { count: "exact", head: true }),
-      ]);
-      if (alive) {
-        setStats({
-          bookings: bookingsRes.count ?? 0,
-          users: usersRes.count ?? 0,
-        });
-      }
-    };
-
-    load();
-    return () => { alive = false; };
-  }, [isAdmin]);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -99,29 +76,7 @@ const AccountInfo = () => {
         }
       </div>
 
-      {isAdmin && (
-        <div className="account-page__card">
-          <div className="account-page__section-title" style={{ marginBottom: 12 }}>Admin overview</div>
-          <div className="admin-stats">
-            <button
-              type="button"
-              className="admin-stat"
-              onClick={() => navigate("/account/bookings")}
-            >
-              <span className="admin-stat__number">{stats.bookings}</span>
-              <span className="admin-stat__label">Total bookings</span>
-            </button>
-            <button
-              type="button"
-              className="admin-stat"
-              onClick={() => navigate("/account/users")}
-            >
-              <span className="admin-stat__number">{stats.users}</span>
-              <span className="admin-stat__label">Total users</span>
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Admin overview and calendar moved to /account/dashboard */}
 
       <form className="account-page__card account-form" onSubmit={submit}>
         <label className="account-form__field">

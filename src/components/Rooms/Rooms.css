@@ -123,6 +123,68 @@
   margin: 18px 0 22px;
 }
 
+.rooms__layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.rooms__sidebar {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+
+.rooms__sidebar-title {
+  font-weight: 800;
+  color: var(--color-primary-strong);
+  margin-bottom: 10px;
+}
+
+.rooms__sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.room-type-pill--sidebar {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  border-radius: 14px;
+}
+
+.rooms__search--top {
+  width: 100%;
+  margin: 0 0 16px;
+}
+
+@media (max-width: 980px) {
+  .rooms__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .rooms__sidebar {
+    position: static;
+  }
+
+  .rooms__sidebar-list {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .room-type-pill--sidebar {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: auto;
+    border-radius: 999px;
+  }
+}
+
 .rooms__footer {
   margin-top: 22px;
   display: flex;

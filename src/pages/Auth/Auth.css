@@ -46,6 +46,35 @@
   border-radius: var(--radius-sm);
 }
 
+.auth-password {
+  position: relative;
+}
+
+.auth-password input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.auth-password__eye {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.auth-password__eye:hover {
+  background: rgba(179, 32, 42, 0.08);
+  color: var(--color-primary-strong);
+}
+
 .auth-actions {
   margin-top: 6px;
   display: grid;

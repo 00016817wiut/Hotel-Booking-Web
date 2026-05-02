@@ -13,12 +13,16 @@ import Layout from "./components/Layout/Layout.jsx";
 import AuthProvider from "./auth/AuthProvider.jsx";
 import Login from "./pages/Auth/Login.jsx";
 import Register from "./pages/Auth/Register.jsx";
+import ForgotPassword from "./pages/Auth/ForgotPassword.jsx";
+import ResetPassword from "./pages/Auth/ResetPassword.jsx";
 import RequireAuth from "./routes/RequiresAuth.jsx";
+import RequireAdmin from "./routes/RequireAdmin.jsx";
 import AccountLayout from "./pages/Account/AccountLayout.jsx";
 import AccountInfo from "./pages/Account/AccountInfo.jsx";
 import AccountBookings from "./pages/Account/AccountBookings.jsx";
 import AccountRooms from "./pages/Account/AccountRooms.jsx";
 import AccountUsers from "./pages/Account/AccountUsers.jsx";
+import AccountDashboard from "./pages/Account/AccountDashboard.jsx";
 import BookingConfirmation from "./pages/Booking/BookingConfirmation.jsx";
 import "./assets/fonts/fonts.css";
 import "./assets/styles/root.css";
@@ -44,6 +48,8 @@ const router = createBrowserRouter([
       { path: "terms-of-service", element: <TermsOfService /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "reset-password", element: <ResetPassword /> },
       {
         path: "account",
         element: (
@@ -54,6 +60,14 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Navigate to="/account/info" replace /> },
           { path: "info", element: <AccountInfo /> },
+          {
+            path: "dashboard",
+            element: (
+              <RequireAdmin>
+                <AccountDashboard />
+              </RequireAdmin>
+            ),
+          },
           { path: "bookings", element: <AccountBookings /> },
           { path: "rooms", element: <AccountRooms /> },
           { path: "users", element: <AccountUsers /> },

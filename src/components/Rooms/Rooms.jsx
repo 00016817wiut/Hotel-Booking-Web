@@ -145,9 +145,10 @@ const Rooms = () => {
       ? "All room types"
       : roomTypes.find((t) => String(t).toLowerCase() === roomTypeParam.toLowerCase()) || roomTypeParam;
 
-  const onSearch = ({ checkIn: ci, checkOut: co, guests: g, roomType }) => {
+  const onSearch = ({ checkIn: ci, checkOut: co, guests: g }) => {
     const next = { checkIn: ci, checkOut: co, guests: g };
-    if (roomType && roomType !== "any") next.roomType = roomType;
+    // Room type is controlled by the sidebar; preserve it across searches.
+    if (roomTypeParam && roomTypeParam !== "any") next.roomType = roomTypeParam;
     setSearchParams(next);
   };
 
@@ -173,118 +174,122 @@ const Rooms = () => {
           </p>
         </div>
 
-        <div className="rooms__search">
+        <div className="rooms__search rooms__search--top" aria-label="Date and guest filters">
           <BookingSearch
-            variant="inline"
-            title="Filter"
+            variant="bar"
             defaultValues={{
               ...(checkIn ? { checkIn } : {}),
               ...(checkOut ? { checkOut } : {}),
               guests: guestsParam || "2",
-              roomType: roomTypeParam,
             }}
             onSubmit={onSearch}
-            showRoomType
-            roomTypes={roomTypes}
           />
         </div>
 
-        <div className="room-types" aria-label="Room type selector">
-          <button
-            type="button"
-            className={`room-type-pill${roomTypeParam === "any" ? " room-type-pill--active" : ""}`}
-            onClick={() => pickType("any")}
-          >
-            <span className="room-type-pill__name">All</span>
-            <span className="room-type-pill__meta">{allRooms.length} rooms</span>
-          </button>
-
-          {typeCards.map((card) => {
-            const isActive = String(roomTypeParam).toLowerCase() === String(card.type).toLowerCase();
-            return (
+        <div className="rooms__layout">
+          <aside className="rooms__sidebar" aria-label="Room type filters">
+            <div className="rooms__sidebar-title">Room types</div>
+            <div className="rooms__sidebar-list">
               <button
                 type="button"
-                className={`room-type-pill${isActive ? " room-type-pill--active" : ""}`}
-                key={card.type}
-                onClick={() => pickType(card.type)}
+                className={`room-type-pill room-type-pill--sidebar${roomTypeParam === "any" ? " room-type-pill--active" : ""}`}
+                onClick={() => pickType("any")}
               >
-                <span className="room-type-pill__name">{card.type}</span>
-                <span className="room-type-pill__badge">
-                  {card.available}/{card.total}
-                </span>
-                <span className="room-type-pill__meta">
-                  {card.maxCapacity != null ? `Up to ${card.maxCapacity}` : ""}
-                  {card.fromPrice != null ? ` · from ${formatMoney(card.fromPrice)}` : ""}
-                </span>
+                <span className="room-type-pill__name">All</span>
+                <span className="room-type-pill__meta">{allRooms.length} rooms</span>
               </button>
-            );
-          })}
-        </div>
 
-        {showRoomsList ? (
-          <div className="rooms__list">
-            <div className="rooms__list-header">
-              <h2>{`Available rooms: ${roomTypeLabel}`}</h2>
-              <p>
-                {availabilityLoading || roomsLoading
-                  ? "Loading…"
-                  : `${filteredRooms.length} room(s) available for your selection.`}
-              </p>
+              {typeCards.map((card) => {
+                const isActive = String(roomTypeParam).toLowerCase() === String(card.type).toLowerCase();
+                return (
+                  <button
+                    type="button"
+                    className={`room-type-pill room-type-pill--sidebar${isActive ? " room-type-pill--active" : ""}`}
+                    key={card.type}
+                    onClick={() => pickType(card.type)}
+                  >
+                    <span className="room-type-pill__name">{card.type}</span>
+                    <span className="room-type-pill__badge">
+                      {card.available}/{card.total}
+                    </span>
+                    <span className="room-type-pill__meta">
+                      {card.maxCapacity != null ? `Up to ${card.maxCapacity}` : ""}
+                      {card.fromPrice != null ? ` · from ${formatMoney(card.fromPrice)}` : ""}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
+          </aside>
 
-            <div className={`rooms__body${isSingleResult ? " rooms__body--single" : ""}`}>
-              {filteredRooms.map((room) => (
-                <Link to={`/room/${room.id}?${searchParams.toString()}`} className="rooms__body-item" key={room.id}>
-                  <div className="room__image">
-                    {Array.isArray(room.images) && room.images[0] ? (
-                      <img
-                        src={room.images[0]}
-                        alt={`${room.type} ${room.room_number || ""}`.trim()}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="room__image-placeholder">No image</div>
-                    )}
+          <div className="rooms__main">
+            {showRoomsList ? (
+              <div className="rooms__list">
+                <div className="rooms__list-header">
+                  <h2>{`Available rooms: ${roomTypeLabel}`}</h2>
+                  <p>
+                    {availabilityLoading || roomsLoading
+                      ? "Loading…"
+                      : `${filteredRooms.length} room(s) available for your selection.`}
+                  </p>
+                </div>
+
+                <div className={`rooms__body${isSingleResult ? " rooms__body--single" : ""}`}>
+                  {filteredRooms.map((room) => (
+                    <Link to={`/room/${room.id}?${searchParams.toString()}`} className="rooms__body-item" key={room.id}>
+                      <div className="room__image">
+                        {Array.isArray(room.images) && room.images[0] ? (
+                          <img
+                            src={room.images[0]}
+                            alt={`${room.type} ${room.room_number || ""}`.trim()}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="room__image-placeholder">No image</div>
+                        )}
+                      </div>
+
+                      <div className="room__info">
+                        <h1>
+                          {room.type}
+                          {room.room_number ? <span className="room__number"> · #{room.room_number}</span> : null}
+                        </h1>
+                        <p className="room__sub">
+                          {room.beds != null ? `${room.beds} bed(s)` : "Beds: -"}
+                          {room.size_sqm != null ? ` · ${room.size_sqm} sqm` : ""}
+                        </p>
+                        <p className="room__price">
+                          <span>{formatMoney(room.base_price_per_night, room.currency || "USD")}</span> / night
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+
+                {filteredRooms.length === 0 ? (
+                  <div className="rooms__empty">
+                    <h2>No rooms found</h2>
+                    <p>Try different dates or reduce the number of guests.</p>
                   </div>
+                ) : null}
+              </div>
+            ) : (
+              <div className="rooms__hint">
+                <h2>Choose a room type</h2>
+                <p>Pick a type below or set dates and guests to see what is available.</p>
+              </div>
+            )}
 
-                  <div className="room__info">
-                    <h1>
-                      {room.type}
-                      {room.room_number ? <span className="room__number"> · #{room.room_number}</span> : null}
-                    </h1>
-                    <p className="room__sub">
-                      {room.beds != null ? `${room.beds} bed(s)` : "Beds: -"}
-                      {room.size_sqm != null ? ` · ${room.size_sqm} sqm` : ""}
-                    </p>
-                    <p className="room__price">
-                      <span>{formatMoney(room.base_price_per_night, room.currency || "USD")}</span> / night
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {filteredRooms.length === 0 ? (
-              <div className="rooms__empty">
-                <h2>No rooms found</h2>
-                <p>Try different dates or reduce the number of guests.</p>
+            {hasDateFilter || hasGuestFilter || roomTypeParam !== "any" ? (
+              <div className="rooms__footer">
+                <button className="rooms__clear" type="button" onClick={() => setSearchParams({})}>
+                  Clear filters
+                </button>
               </div>
             ) : null}
           </div>
-        ) : (
-          <div className="rooms__hint">
-            <h2>Choose a room type</h2>
-            <p>Pick a type above or set dates and guests to see what is available.</p>
-          </div>
-        )}
+        </div>
 
-        {hasDateFilter || hasGuestFilter || roomTypeParam !== "any" ? (
-          <div className="rooms__footer">
-            <button className="rooms__clear" type="button" onClick={() => setSearchParams({})}>
-              Clear filters
-            </button>
-          </div>
-        ) : null}
       </div>
     </section>
   );
