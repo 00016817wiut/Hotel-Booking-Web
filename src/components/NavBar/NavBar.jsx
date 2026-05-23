@@ -1,23 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext.jsx";
 import logo from "../../assets/icons/logo.jpg";
 import profile from "../../assets/icons/profile.svg"
 import "./NavBar.css";
 import "./NavBarMenu.css";
-
-const routeLinks = [
-  { label: "Home", to: "/" },
-  { label: "Rooms", to: "/rooms" },
-];
-
-const sectionLinks = [
-  { label: "About", href: "/#about" },
-  { label: "Facilities", href: "/#services" },
-  { label: "FAQ", href: "/#faq" },
-  { label: "Reviews", href: "/#reviews" },
-  { label: "Contact", href: "/#contact" },
-];
+import { routeLinks, sectionLinks } from "../../utils/navRoutes.js";
+import { useLockBodyScroll, useScrollToHash } from "../../hooks/base.js";
 
 
 const NavBar = () => {
@@ -25,35 +14,10 @@ const NavBar = () => {
   const location = useLocation();
   const { user } = useAuth();
 
-  useEffect(() => {
-    const isReload = performance.getEntriesByType("navigation")[0].type === "reload"
-
-    if (isReload) {
-      window.scrollTo(0, 0)
-      return
-    }
-    else {
-      if (location.hash) {
-        const el = document.querySelector(location.hash)
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth" })
-        }
-      }
-
-      if (location.pathname === "/rooms") {
-        window.scrollTo(0, 0)
-      }
-    }
-  }, [location])
-
+  useScrollToHash(location)
   const closeMenu = () => setIsMenuOpen(false);
+  useLockBodyScroll(isMenuOpen);
 
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isMenuOpen]);
 
   return (
     <>

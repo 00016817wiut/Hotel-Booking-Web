@@ -1,24 +1,6 @@
+import { services, stats } from "../../../utils/base";
 import "./Services.css";
-import pickup from "../../../assets/icons/pickup.svg";
-import parking from "../../../assets/icons/parking.svg";
-import roomserv from "../../../assets/icons/roomserv.svg";
-import internet from "../../../assets/icons/internet.svg";
-import breakfast from "../../../assets/icons/breakfast.svg";
 
-const services = [
-  { title: "Pick up & drop", icon: pickup },
-  { title: "Parking space", icon: parking },
-  { title: "Room service", icon: roomserv },
-  { title: "Fiber internet", icon: internet },
-  { title: "Breakfast", icon: breakfast },
-];
-
-const stats = [
-  { number: "9", label: "Rooms & suites" },
-  { number: "25", label: "Restaurant partners" },
-  { number: "510+", label: "Satisfied guests" },
-  { number: "65", label: "Nearby destinations" },
-];
 
 const Services = () => {
   return (

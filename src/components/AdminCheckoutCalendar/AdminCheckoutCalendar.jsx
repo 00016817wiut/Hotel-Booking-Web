@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../../lib/supabaseClient";
+import Skeleton from "../Skeleton/Skeleton.jsx";
 import "./AdminCheckoutCalendar.css";
 
 const pad2 = (n) => String(n).padStart(2, "0");
@@ -139,7 +140,33 @@ const AdminCheckoutCalendar = () => {
       </div>
 
       {loading ? (
-        <div className="checkout-cal__loading">Loading…</div>
+        <>
+          <div className="checkout-cal__grid" role="grid" aria-hidden="true">
+            {weekdayNames.map((w) => (
+              <div key={w} className="checkout-cal__dow" role="columnheader">
+                {w}
+              </div>
+            ))}
+
+            {Array.from({ length: 42 }).map((_, i) => (
+              <div key={i} className="checkout-cal__cell">
+                <Skeleton style={{ width: 24, height: 14, borderRadius: 8 }} />
+              </div>
+            ))}
+          </div>
+
+          <div className="checkout-cal__list" aria-hidden="true">
+            <Skeleton style={{ height: 14, width: "42%" }} />
+            <div className="checkout-cal__rows" style={{ marginTop: 10 }}>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="checkout-cal__row">
+                  <Skeleton style={{ height: 14, width: "58%" }} />
+                  <Skeleton style={{ height: 12, width: "46%", marginTop: 8 }} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       ) : (
         <div className="checkout-cal__grid" role="grid">
           {weekdayNames.map((w) => (

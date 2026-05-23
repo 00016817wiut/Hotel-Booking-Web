@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../auth/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
+import Skeleton from "../../components/Skeleton/Skeleton.jsx";
 import "./AccountPages.css";
 
 const AccountUsers = () => {
@@ -69,7 +70,21 @@ const AccountUsers = () => {
       </header>
 
       {loading ? (
-        <p className="account-page__muted">Loading…</p>
+        <div className="user-list" aria-hidden="true">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <article className="user-item" key={i}>
+              <div className="user-item__top">
+                <div className="user-item__info">
+                  <Skeleton style={{ height: 14, width: "70%" }} />
+                  <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+                    <Skeleton style={{ height: 22, width: 80, borderRadius: 999 }} />
+                    <Skeleton style={{ height: 22, width: 90, borderRadius: 999 }} />
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       ) : rows.length ? (
         <div className="user-list">
           {rows.map((u) => (

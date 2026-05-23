@@ -1,103 +1,36 @@
 import "./Rooms.css";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import BookingSearch from "../BookingSearch/BookingSearch.jsx";
 import toast from "react-hot-toast";
 import { fetchActiveRooms, fetchAvailableRooms } from "../../lib/roomsApi.js";
-
-const formatMoney = (value, currency = "USD") => {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return "-";
-  try {
-    return new Intl.NumberFormat("en-US", { style: "currency", currency, maximumFractionDigits: 0 }).format(n);
-  } catch {
-    return `$${Math.round(n)}`;
-  }
-};
+import Skeleton from "../Skeleton/Skeleton.jsx";
+import { useAvailableRooms, useRooms } from "../../hooks/rooms.js";
+import { formatMoney, pickType } from "../../utils/helpers/rooms.js";
 
 const Rooms = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [allRooms, setAllRooms] = useState([]);
   const [roomsLoading, setRoomsLoading] = useState(true);
   const [availableRooms, setAvailableRooms] = useState(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
-
   const checkIn = searchParams.get("checkIn") || "";
   const checkOut = searchParams.get("checkOut") || "";
   const guestsParam = searchParams.get("guests") || "";
   const roomTypeParam = searchParams.get("roomType") || "any";
   const guests = guestsParam ? Number(guestsParam) : 0;
-
   const hasDateFilter = Boolean(checkIn && checkOut);
   const hasGuestFilter = Number.isFinite(guests) && guests > 0;
-
   const showRoomsList = roomTypeParam !== "any" || hasDateFilter || hasGuestFilter;
 
-  useEffect(() => {
-    let alive = true;
+  useRooms(setRoomsLoading, setAllRooms, fetchActiveRooms, toast);
+  useAvailableRooms(hasDateFilter, setAvailabilityLoading, setAvailableRooms, fetchAvailableRooms, toast, hasGuestFilter, guests, checkIn, checkOut);
 
-    const load = async () => {
-      setRoomsLoading(true);
-      try {
-        const rows = await fetchActiveRooms();
-        if (!alive) return;
-        setAllRooms(rows);
-      } catch (e) {
-        if (!alive) return;
-        toast.error(e?.message || "Failed to load rooms.");
-        setAllRooms([]);
-      } finally {
-        if (alive) setRoomsLoading(false);
-      }
-    };
-
-    load();
-    return () => {
-      alive = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    let alive = true;
-
-    const loadAvailability = async () => {
-      if (!hasDateFilter) {
-        setAvailableRooms(null);
-        return;
-      }
-
-      setAvailabilityLoading(true);
-      try {
-        const g = hasGuestFilter ? guests : 1;
-        const rows = await fetchAvailableRooms({
-          checkIn,
-          checkOut,
-          guests: g,
-          type: null,
-        });
-        if (!alive) return;
-        setAvailableRooms(rows);
-      } catch (e) {
-        if (!alive) return;
-        toast.error(e?.message || "Failed to load availability.");
-        setAvailableRooms([]);
-      } finally {
-        if (alive) setAvailabilityLoading(false);
-      }
-    };
-
-    loadAvailability();
-    return () => {
-      alive = false;
-    };
-  }, [checkIn, checkOut, guests, hasDateFilter, hasGuestFilter]);
 
   const roomTypes = useMemo(
     () => Array.from(new Set(allRooms.map((r) => r.type).filter(Boolean))).sort(),
     [allRooms]
   );
-
   const roomsBase = availableRooms ?? allRooms;
 
   const typeCards = useMemo(() => {
@@ -152,16 +85,6 @@ const Rooms = () => {
     setSearchParams(next);
   };
 
-  const pickType = (type) => {
-    const next = {};
-    if (checkIn) next.checkIn = checkIn;
-    if (checkOut) next.checkOut = checkOut;
-    if (guestsParam) next.guests = guestsParam;
-
-    if (type && type !== "any") next.roomType = type;
-    setSearchParams(next);
-  };
-
   return (
     <section className="rooms" id="rooms">
       <div className="rooms__container content">
@@ -183,6 +106,7 @@ const Rooms = () => {
               guests: guestsParam || "2",
             }}
             onSubmit={onSearch}
+            rooms="rooms__search-form"
           />
         </div>
 
@@ -190,40 +114,72 @@ const Rooms = () => {
           <aside className="rooms__sidebar" aria-label="Room type filters">
             <div className="rooms__sidebar-title">Room types</div>
             <div className="rooms__sidebar-list">
-              <button
-                type="button"
-                className={`room-type-pill room-type-pill--sidebar${roomTypeParam === "any" ? " room-type-pill--active" : ""}`}
-                onClick={() => pickType("any")}
-              >
-                <span className="room-type-pill__name">All</span>
-                <span className="room-type-pill__meta">{allRooms.length} rooms</span>
-              </button>
-
-              {typeCards.map((card) => {
-                const isActive = String(roomTypeParam).toLowerCase() === String(card.type).toLowerCase();
-                return (
+              {roomsLoading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="room-type-pill room-type-pill--sidebar room-type-pill--skel" aria-hidden="true">
+                    <Skeleton className="room-type-pill__skel-line" style={{ height: 14, width: `${70 + i * 3}%` }} />
+                    <Skeleton className="room-type-pill__skel-line" style={{ height: 12, width: "55%", marginTop: 8 }} />
+                  </div>
+                ))
+              ) : (
+                <>
                   <button
                     type="button"
-                    className={`room-type-pill room-type-pill--sidebar${isActive ? " room-type-pill--active" : ""}`}
-                    key={card.type}
-                    onClick={() => pickType(card.type)}
+                    className={`room-type-pill room-type-pill--sidebar${roomTypeParam === "any" ? " room-type-pill--active" : ""}`}
+                    onClick={() => pickType("any")}
                   >
-                    <span className="room-type-pill__name">{card.type}</span>
-                    <span className="room-type-pill__badge">
-                      {card.available}/{card.total}
-                    </span>
-                    <span className="room-type-pill__meta">
-                      {card.maxCapacity != null ? `Up to ${card.maxCapacity}` : ""}
-                      {card.fromPrice != null ? ` · from ${formatMoney(card.fromPrice)}` : ""}
-                    </span>
+                    <span className="room-type-pill__name">All</span>
+                    <span className="room-type-pill__meta">{allRooms.length} rooms</span>
                   </button>
-                );
-              })}
+
+                  {typeCards.map((card) => {
+                    const isActive = String(roomTypeParam).toLowerCase() === String(card.type).toLowerCase();
+                    return (
+                      <button
+                        type="button"
+                        className={`room-type-pill room-type-pill--sidebar${isActive ? " room-type-pill--active" : ""}`}
+                        key={card.type}
+                        onClick={() => pickType(card.type)}
+                      >
+                        <span className="room-type-pill__name">{card.type}</span>
+                        <span className="room-type-pill__badge">
+                          {card.available}/{card.total}
+                        </span>
+                        <span className="room-type-pill__meta">
+                          {card.maxCapacity != null ? `Up to ${card.maxCapacity}` : ""}
+                          {card.fromPrice != null ? ` · from ${formatMoney(card.fromPrice)}` : ""}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </>
+              )}
             </div>
           </aside>
 
           <div className="rooms__main">
-            {showRoomsList ? (
+            {roomsLoading ? (
+              <div className="rooms__list">
+                <div className="rooms__list-header">
+                  <Skeleton style={{ height: 18, width: "48%" }} />
+                  <Skeleton style={{ height: 14, width: "36%", marginTop: 8 }} />
+                </div>
+                <div className="rooms__body">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div className="rooms__body-item rooms__body-item--skel" key={i} aria-hidden="true">
+                      <div className="room__image">
+                        <Skeleton style={{ height: "100%", width: "100%", borderRadius: 0 }} />
+                      </div>
+                      <div className="room__info">
+                        <Skeleton style={{ height: 18, width: "78%" }} />
+                        <Skeleton style={{ height: 14, width: "62%", marginTop: 10 }} />
+                        <Skeleton style={{ height: 16, width: "46%", marginTop: 14 }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : showRoomsList ? (
               <div className="rooms__list">
                 <div className="rooms__list-header">
                   <h2>{`Available rooms: ${roomTypeLabel}`}</h2>

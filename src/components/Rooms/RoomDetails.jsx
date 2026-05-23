@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import { fetchRoomById } from "../../lib/roomsApi.js";
 import { useAuth } from "../../auth/AuthContext";
 import { createBookingRequest } from "../../lib/bookingsApi.js";
+import Skeleton from "../Skeleton/Skeleton.jsx";
+import { useRoomDetails } from "../../hooks/rooms.js";
 
 const todayISO = () => {
   const d = new Date();
@@ -62,29 +64,7 @@ const RoomDetails = () => {
   const [specialRequests, setSpecialRequests] = useState("");
   const [bookingSending, setBookingSending] = useState(false);
 
-  useEffect(() => {
-    let alive = true;
-
-    const load = async () => {
-      setLoading(true);
-      try {
-        const r = await fetchRoomById(id);
-        if (!alive) return;
-        setRoom(r);
-      } catch (e) {
-        if (!alive) return;
-        toast.error(e?.message || "Failed to load room.");
-        setRoom(null);
-      } finally {
-        if (alive) setLoading(false);
-      }
-    };
-
-    load();
-    return () => {
-      alive = false;
-    };
-  }, [id]);
+  useRoomDetails(id, setLoading, setRoom, fetchRoomById, toast);
 
   useEffect(() => {
     const sp = new URLSearchParams(location.search);
@@ -214,12 +194,32 @@ const RoomDetails = () => {
 
   if (loading) {
     return (
-      <section className="room-details room-details--missing content">
-        <h1>Loading…</h1>
-        <p>Fetching room details.</p>
-        <Link to={backToRooms} className="room-details__button">
-          Back to rooms
-        </Link>
+      <section className="room-details">
+        <div className="room-details-container content" ref={rootRef}>
+          <div className="room-details__media" aria-hidden="true">
+            <div className="room-details__stage">
+              <Skeleton style={{ width: "100%", height: 360, borderRadius: 18 }} />
+            </div>
+            <div className="room-details__thumbs">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} style={{ width: "100%", height: 72, borderRadius: 14 }} />
+              ))}
+            </div>
+          </div>
+
+          <div className="room-details__info" aria-hidden="true">
+            <Skeleton style={{ width: "42%", height: 16, borderRadius: 10 }} />
+            <Skeleton style={{ width: "72%", height: 30, borderRadius: 12, marginTop: 10 }} />
+            <Skeleton style={{ width: "100%", height: 56, borderRadius: 12, marginTop: 12 }} />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10, marginTop: 14 }}>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} style={{ width: "100%", height: 34, borderRadius: 12 }} />
+              ))}
+            </div>
+            <Skeleton style={{ width: "46%", height: 22, borderRadius: 12, marginTop: 16 }} />
+            <Skeleton style={{ width: "100%", height: 168, borderRadius: 16, marginTop: 16 }} />
+          </div>
+        </div>
       </section>
     );
   }
@@ -283,9 +283,8 @@ const RoomDetails = () => {
                     <button
                       key={`${it.kind}-${src}-${i}`}
                       type="button"
-                      className={`room-details__thumb${isActive ? " room-details__thumb--active" : ""}${
-                        isBroken ? " room-details__thumb--broken" : ""
-                      }`}
+                      className={`room-details__thumb${isActive ? " room-details__thumb--active" : ""}${isBroken ? " room-details__thumb--broken" : ""
+                        }`}
                       onClick={() => {
                         if (!isBroken) setActiveIndex(i);
                       }}
@@ -428,7 +427,7 @@ const RoomDetails = () => {
             </Link>
           </div>
 
-          
+
         </div>
       </div>
     </section>

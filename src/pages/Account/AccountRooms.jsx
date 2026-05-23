@@ -9,6 +9,7 @@ import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { uploadRoomMedia } from "../../lib/roomImages";
 import { acquireModalLock, releaseModalLock } from "../../lib/modalLock";
+import Skeleton from "../../components/Skeleton/Skeleton.jsx";
 import "./AccountPages.css";
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
@@ -453,7 +454,25 @@ const AccountRooms = () => {
       </header>
 
       {loading ? (
-        <p className="account-page__muted">Loading…</p>
+        <div className="rooms-admin-grid" aria-hidden="true">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <article className="room-admin-card" key={i}>
+              <div className="room-admin-card__img">
+                <Skeleton style={{ width: "100%", height: 180, borderRadius: 0 }} />
+              </div>
+              <div className="room-admin-card__body">
+                <Skeleton style={{ height: 16, width: "70%" }} />
+                <Skeleton style={{ height: 14, width: "55%", marginTop: 8 }} />
+                <Skeleton style={{ height: 16, width: "45%", marginTop: 12 }} />
+                <Skeleton style={{ height: 14, width: "62%", marginTop: 8 }} />
+              </div>
+              <div className="room-admin-card__actions">
+                <Skeleton style={{ height: 34, width: 90, borderRadius: 10 }} />
+                <Skeleton style={{ height: 34, width: 110, borderRadius: 10 }} />
+              </div>
+            </article>
+          ))}
+        </div>
       ) : rows.length === 0 ? (
         <div className="account-empty">
           <h2>No rooms yet</h2>

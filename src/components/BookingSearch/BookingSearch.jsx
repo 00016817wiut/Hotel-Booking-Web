@@ -122,6 +122,7 @@ const BookingSearch = ({
   title = "Search availability",
   showRoomType = false,
   roomTypes,
+  rooms,
 }) => {
   const defaults = useMemo(() => {
     const base = todayISO();
@@ -226,7 +227,7 @@ const BookingSearch = ({
     <form className={`booking-search booking-search--${variant}`} onSubmit={submit}>
       {variant === "bar" ? (
         <>
-          <div className="booking-search__bar">
+          <div className={`booking-search__bar ${rooms}`}>
             <label className="booking-search__field">
               <span>Check-in</span>
               <input value={checkIn} min={minCheckIn} onChange={(e) => onCheckInChange(e.target.value)} type="date" />

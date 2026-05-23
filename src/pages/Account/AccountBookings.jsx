@@ -4,6 +4,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
 import { cacheGet, cacheSet } from "../../lib/cache";
 import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.jsx";
+import Skeleton from "../../components/Skeleton/Skeleton.jsx";
 import "./AccountPages.css";
 
 const STATUSES = ["pending", "confirmed", "checked_in", "checked_out", "cancelled", "no_show"];
@@ -310,7 +311,27 @@ const AccountBookings = () => {
         <p>Your booking requests and confirmed stays.</p>
       </header>
 
-      {isAdmin && allRows.length > 0 && (
+      {loading ? (
+        <section className="account-page__section" aria-hidden="true">
+          <div className="booking-list">
+            {Array.from({ length: isAdmin ? 6 : 4 }).map((_, i) => (
+              <article className="booking-item" key={i}>
+                <div className="booking-item__top">
+                  <Skeleton style={{ height: 16, width: "42%" }} />
+                  <Skeleton style={{ height: 34, width: 120, borderRadius: 999 }} />
+                </div>
+                <div className="booking-item__meta">
+                  <Skeleton style={{ height: 14, width: "65%" }} />
+                  <Skeleton style={{ height: 14, width: "78%", marginTop: 8 }} />
+                  <Skeleton style={{ height: 14, width: "52%", marginTop: 8 }} />
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {!loading && isAdmin && allRows.length > 0 && (
         <section className="account-page__section">
           <h2 className="account-page__section-title">All bookings</h2>
           <div className="booking-list">
@@ -364,9 +385,7 @@ const AccountBookings = () => {
         )}
 
       <section className="account-page__section">
-        {loading ? (
-          <p className="account-page__muted">Loading…</p>
-        ) : myRows.length ? (
+        {!loading && myRows.length ? (
           <div className="booking-list">
             {myRows.map((b) => (
               <article className="booking-item" key={b.id}>
@@ -399,12 +418,12 @@ const AccountBookings = () => {
               </article>
             ))}
           </div>
-        ) : (
+        ) : !loading ? (
           <div className="account-empty">
             <h2>No bookings yet</h2>
             <p>When you request a booking, it will appear here.</p>
           </div>
-        )}
+        ) : null}
 
         {refreshing ? <p className="account-page__muted">Updating…</p> : null}
       </section>

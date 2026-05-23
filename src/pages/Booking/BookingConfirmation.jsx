@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { useAuth } from "../../auth/AuthContext";
 import "./BookingConfirmation.css";
+import Skeleton from "../../components/Skeleton/Skeleton.jsx";
 
 const formatMoney = (value, currency = "USD") => {
   const n = Number(value);
@@ -87,7 +88,17 @@ const BookingConfirmation = () => {
     return (
       <section className="booking-confirmation content">
         <div className="booking-confirmation__card">
-          <h1>Loading booking confirmation…</h1>
+          <Skeleton style={{ height: 14, width: "38%" }} />
+          <Skeleton style={{ height: 28, width: "62%", marginTop: 10 }} />
+          <Skeleton style={{ height: 14, width: "86%", marginTop: 12 }} />
+          <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 }}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} style={{ border: "1px solid var(--color-border)", borderRadius: 12, padding: "12px 14px" }}>
+                <Skeleton style={{ height: 12, width: "46%" }} />
+                <Skeleton style={{ height: 14, width: "72%", marginTop: 8 }} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     );
