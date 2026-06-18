@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../auth/AuthContext";
 import { supabase } from "../../lib/supabaseClient";
@@ -8,6 +8,14 @@ import Skeleton from "../../components/Skeleton/Skeleton.jsx";
 import "./AccountPages.css";
 
 const STATUSES = ["pending", "confirmed", "checked_in", "checked_out", "cancelled", "no_show"];
+
+const normStatus = (v) => String(v || "").trim().toLowerCase();
+
+const ADMIN_STATUS_OPTIONS = [{ value: "all", label: "All statuses" }, ...STATUSES.map((s) => ({ value: s, label: s }))];
+const ADMIN_SORT_OPTIONS = [
+  { value: "newest", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+];
 
 const isoDateToUtcMs = (iso) => {
   if (!iso || typeof iso !== "string") return null;
@@ -66,12 +74,33 @@ const AccountBookings = () => {
   const { user } = useAuth();
   const isAdmin = String(user?.profile?.role || "").toLowerCase() === "admin";
 
+  const [adminStatus, setAdminStatus] = useState("all");
+  const [adminSort, setAdminSort] = useState("newest");
+
   const [myRows, setMyRows] = useState([]);
   const [allRows, setAllRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [cancellingId, setCancellingId] = useState(null);
   const [confirm, setConfirm] = useState(null);
+
+  const filteredAdminRows = useMemo(() => {
+    if (!isAdmin) return [];
+    let rows = Array.isArray(allRows) ? allRows : [];
+
+    rows = rows.filter((b) => String(b?.auth_id || "") !== String(user?.id || ""));
+    const statusFilter = normStatus(adminStatus || "all");
+    if (statusFilter !== "all") {
+      rows = rows.filter((b) => normStatus(b?.status) === statusFilter);
+    }
+
+    const dir = adminSort === "oldest" ? 1 : -1;
+    return [...rows].sort((a, b) => {
+      const ta = a?.created_at ? Date.parse(a.created_at) : 0;
+      const tb = b?.created_at ? Date.parse(b.created_at) : 0;
+      return (ta - tb) * dir;
+    });
+  }, [isAdmin, allRows, adminStatus, adminSort, user?.id]);
 
   const myRowsRef = useRef([]);
   const allRowsRef = useRef([]);
@@ -307,93 +336,71 @@ const AccountBookings = () => {
         onClose={() => setConfirm(null)}
       />
       <header className="account-page__header">
-        <h1>My bookings</h1>
-        <p>Your booking requests and confirmed stays.</p>
+        <h1>{isAdmin ? "Bookings" : "My bookings"}</h1>
+        <p>
+          {isAdmin
+            ? "Review and manage booking requests."
+            : "Your booking requests and confirmed stays."}
+        </p>
       </header>
 
-      {loading ? (
-        <section className="account-page__section" aria-hidden="true">
-          <div className="booking-list">
-            {Array.from({ length: isAdmin ? 6 : 4 }).map((_, i) => (
+      <section className="account-page__section">
+        <h2 className="account-page__section-title">My bookings</h2>
+        {loading ? (
+          <div className="booking-list" aria-hidden="true">
+            {Array.from({ length: 3 }).map((_, i) => (
               <article className="booking-item" key={i}>
                 <div className="booking-item__top">
                   <Skeleton style={{ height: 16, width: "42%" }} />
                   <Skeleton style={{ height: 34, width: 120, borderRadius: 999 }} />
                 </div>
                 <div className="booking-item__meta">
-                  <Skeleton style={{ height: 14, width: "65%" }} />
-                  <Skeleton style={{ height: 14, width: "78%", marginTop: 8 }} />
+                  <Skeleton style={{ height: 14, width: "78%" }} />
                   <Skeleton style={{ height: 14, width: "52%", marginTop: 8 }} />
+                  <Skeleton style={{ height: 14, width: "65%", marginTop: 8 }} />
                 </div>
+                {!isAdmin ? (
+                  <div className="booking-item__actions">
+                    <Skeleton style={{ height: 36, width: 130, borderRadius: 999 }} />
+                  </div>
+                ) : null}
               </article>
             ))}
           </div>
-        </section>
-      ) : null}
-
-      {!loading && isAdmin && allRows.length > 0 && (
-        <section className="account-page__section">
-          <h2 className="account-page__section-title">All bookings</h2>
-          <div className="booking-list">
-            {allRows.map((b) => (
-              <article className="booking-item" key={b.id}>
-                <div className="booking-item__top">
-                  <div className="booking-item__title">Booking #{b.id}</div>
-                  {String(b.status || "").toLowerCase() === "cancelled" ? (
-                    <div className="booking-item__admin-actions">
-                      <div className={`booking-item__status booking-item__status--cancelled`}>cancelled</div>
-                      <button
-                        type="button"
-                        className="booking-item__delete"
-                        onClick={() => requestDeleteBooking(b)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  ) : (
-                    <select
-                      className={`booking-item__status booking-item__status--${String(b.status || "unknown").toLowerCase()}`}
-                      value={b.status || "pending"}
-                      onChange={(e) => requestStatusChange(b, e.target.value)}
-                    >
-                      {STATUSES.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-                  <div className="booking-item__meta">
-                    <div>User: {displayName(b)}</div>
-                    {b.created_at ? <div>Requested: {formatDateTime(b.created_at)}</div> : null}
-                    <div>Check-in: {b.check_in || "-"} → Check-out: {b.check_out || "-"}</div>
-                    <div>Guests: {b.guests ?? "-"}</div>
-                    <div>
-                      Nights: {nightsBetween(b.check_in, b.check_out) || "-"} · Total: {formatMoney(b.total_amount, b.currency || "USD")}
-                    </div>
-                    {b.special_requests ? (
-                      <div>
-                        Requests: <span className="booking-item__requests">{b.special_requests}</span>
-                      </div>
-                    ) : null}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
-
-      <section className="account-page__section">
-        {!loading && myRows.length ? (
+        ) : myRows.length ? (
           <div className="booking-list">
             {myRows.map((b) => (
               <article className="booking-item" key={b.id}>
                 <div className="booking-item__top">
                   <div className="booking-item__title">Booking #{b.id}</div>
-                  <div className={`booking-item__status booking-item__status--${String(b.status || "unknown").toLowerCase()}`}>
-                    {b.status || "unknown"}
-                  </div>
+                  {isAdmin ? (
+                    String(b.status || "").toLowerCase() === "cancelled" ? (
+                      <div className="booking-item__admin-actions">
+                        <div className="booking-item__status booking-item__status--cancelled">cancelled</div>
+                        <button
+                          type="button"
+                          className="booking-item__delete"
+                          onClick={() => requestDeleteBooking(b)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ) : (
+                      <select
+                        className={`booking-item__status booking-item__status--${String(b.status || "unknown").toLowerCase()}`}
+                        value={b.status || "pending"}
+                        onChange={(e) => requestStatusChange(b, e.target.value)}
+                      >
+                        {STATUSES.map((s) => (
+                          <option key={s} value={s}>{s}</option>
+                        ))}
+                      </select>
+                    )
+                  ) : (
+                    <div className={`booking-item__status booking-item__status--${String(b.status || "unknown").toLowerCase()}`}>
+                      {b.status || "unknown"}
+                    </div>
+                  )}
                 </div>
                 <div className="booking-item__meta">
                   <div>Check-in: {b.check_in || "-"} → Check-out: {b.check_out || "-"}</div>
@@ -403,7 +410,7 @@ const AccountBookings = () => {
                   </div>
                 </div>
 
-                {String(b.status || "").toLowerCase() === "pending" ? (
+                {!isAdmin && String(b.status || "").toLowerCase() === "pending" ? (
                   <div className="booking-item__actions">
                     <button
                       type="button"
@@ -418,15 +425,122 @@ const AccountBookings = () => {
               </article>
             ))}
           </div>
-        ) : !loading ? (
+        ) : (
           <div className="account-empty">
             <h2>No bookings yet</h2>
             <p>When you request a booking, it will appear here.</p>
           </div>
-        ) : null}
+        )}
 
         {refreshing ? <p className="account-page__muted">Updating…</p> : null}
       </section>
+
+      {isAdmin && (
+        <section className="account-page__section">
+          <div className="account-page__section-head">
+            <h2 className="account-page__section-title">Other bookings</h2>
+            <div className="booking-filters" aria-label="Other bookings filters">
+              <label className="booking-filters__field">
+                <span>Status</span>
+                <select value={adminStatus} onChange={(e) => setAdminStatus(e.target.value)}>
+                  {ADMIN_STATUS_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="booking-filters__field">
+                <span>Sort</span>
+                <select value={adminSort} onChange={(e) => setAdminSort(e.target.value)}>
+                  {ADMIN_SORT_OPTIONS.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          </div>
+          {loading ? (
+            <div className="booking-list" aria-hidden="true">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <article className="booking-item" key={i}>
+                  <div className="booking-item__top">
+                    <Skeleton style={{ height: 16, width: "42%" }} />
+                    <Skeleton style={{ height: 34, width: 120, borderRadius: 999 }} />
+                  </div>
+                  <div className="booking-item__meta">
+                    <Skeleton style={{ height: 14, width: "55%" }} />
+                    <Skeleton style={{ height: 14, width: "62%", marginTop: 8 }} />
+                    <Skeleton style={{ height: 14, width: "78%", marginTop: 8 }} />
+                    <Skeleton style={{ height: 14, width: "52%", marginTop: 8 }} />
+                    <Skeleton style={{ height: 14, width: "65%", marginTop: 8 }} />
+                    <Skeleton style={{ height: 14, width: "70%", marginTop: 8 }} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="booking-list">
+                {filteredAdminRows.map((b) => (
+                  <article className="booking-item" key={b.id}>
+                    <div className="booking-item__top">
+                      <div className="booking-item__title">Booking #{b.id}</div>
+                      {String(b.status || "").toLowerCase() === "cancelled" ? (
+                        <div className="booking-item__admin-actions">
+                          <div className={`booking-item__status booking-item__status--cancelled`}>cancelled</div>
+                          <button
+                            type="button"
+                            className="booking-item__delete"
+                            onClick={() => requestDeleteBooking(b)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      ) : (
+                        <select
+                          className={`booking-item__status booking-item__status--${String(b.status || "unknown").toLowerCase()}`}
+                          value={b.status || "pending"}
+                          onChange={(e) => requestStatusChange(b, e.target.value)}
+                        >
+                          {STATUSES.map((s) => (
+                            <option key={s} value={s}>
+                              {s}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
+                      <div className="booking-item__meta">
+                        <div>User: {displayName(b)}</div>
+                        {b.created_at ? <div>Requested: {formatDateTime(b.created_at)}</div> : null}
+                        <div>Check-in: {b.check_in || "-"} → Check-out: {b.check_out || "-"}</div>
+                        <div>Guests: {b.guests ?? "-"}</div>
+                        <div>
+                          Nights: {nightsBetween(b.check_in, b.check_out) || "-"} · Total: {formatMoney(b.total_amount, b.currency || "USD")}
+                        </div>
+                        {b.special_requests ? (
+                          <div>
+                            Requests: <span className="booking-item__requests">{b.special_requests}</span>
+                          </div>
+                        ) : null}
+                      </div>
+                  </article>
+                ))}
+              </div>
+
+              {filteredAdminRows.length === 0 ? (
+                <div className="rooms__empty" style={{ marginTop: 14 }}>
+                  <h2>No bookings found</h2>
+                  <p>Try a different status filter.</p>
+                </div>
+              ) : null}
+            </>
+          )}
+        </section>
+      )}
     </div>
   );
 };

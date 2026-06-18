@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../../lib/supabaseClient";
 import Skeleton from "../Skeleton/Skeleton.jsx";
+import Tooltip from "../Tooltip/Tooltip.jsx";
 import "./AdminCheckoutCalendar.css";
 
 const pad2 = (n) => String(n).padStart(2, "0");
@@ -178,9 +179,18 @@ const AdminCheckoutCalendar = () => {
           {grid.map((d, idx) => {
             if (!d) return <div key={`empty-${idx}`} className="checkout-cal__cell checkout-cal__cell--empty" />;
             const iso = toISODate(d);
-            const count = (grouped.get(iso) || []).length;
+            const list = grouped.get(iso) || [];
+            const count = list.length;
             const isSelected = selectedDay === iso;
             const isPast = d < new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            const tooltipText = (() => {
+              if (!count) return "";
+              const lines = list.slice(0, 4).map((b) => `${displayName(b)} (Room #${b.room_id})`);
+              if (list.length > 4) lines.push(`+${list.length - 4} more`);
+              return lines.join("\n");
+            })();
+
             return (
               <button
                 key={iso}
@@ -191,7 +201,11 @@ const AdminCheckoutCalendar = () => {
                 onClick={() => setSelectedDay((prev) => (prev === iso ? null : iso))}
               >
                 <span className="checkout-cal__daynum">{d.getDate()}</span>
-                {count ? <span className="checkout-cal__badge">{count}</span> : null}
+                {count ? (
+                  <Tooltip text={tooltipText}>
+                    <span className="checkout-cal__badge">{count}</span>
+                  </Tooltip>
+                ) : null}
               </button>
             );
           })}

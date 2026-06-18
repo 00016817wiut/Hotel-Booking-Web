@@ -6,18 +6,20 @@ const ConfirmDialog = ({
   open,
   title = "Confirm",
   message,
+  children,
   confirmLabel = "Confirm",
   cancelLabel = "Cancel",
   danger = false,
   onConfirm,
   onClose,
 }) => {
-  if (!open) return null;
-
   useEffect(() => {
+    if (!open) return;
     acquireModalLock();
     return () => releaseModalLock();
-  }, []);
+  }, [open]);
+
+  if (!open) return null;
 
   return (
     <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
@@ -30,7 +32,7 @@ const ConfirmDialog = ({
         </div>
 
         <div className="modal__body">
-          <p className="confirm__text">{message}</p>
+          {children || <p className="confirm__text">{message}</p>}
         </div>
 
         <div className="modal__footer">

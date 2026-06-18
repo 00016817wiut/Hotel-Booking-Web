@@ -1,0 +1,55 @@
+.tip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  outline: none;
+}
+
+/* Keep badge positioning unchanged inside buttons */
+.tip > * {
+  display: inline-flex;
+}
+
+.tip__bubble {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: #111;
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: pre-line;
+  box-shadow: 0 20px 60px -40px rgba(0, 0, 0, 0.9);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+}
+
+.tip__bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: #111;
+}
+
+.tip:hover .tip__bubble,
+.tip:focus-visible .tip__bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip__bubble {
+    transition: none;
+  }
+}

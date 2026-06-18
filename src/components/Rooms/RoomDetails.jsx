@@ -9,6 +9,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { createBookingRequest } from "../../lib/bookingsApi.js";
 import Skeleton from "../Skeleton/Skeleton.jsx";
 import { useRoomDetails } from "../../hooks/rooms.js";
+import ConfirmDialog from "../ConfirmDialog/ConfirmDialog.jsx";
 
 const todayISO = () => {
   const d = new Date();
@@ -30,6 +31,13 @@ const formatMoney = (value, currency = "USD") => {
   } catch {
     return `$${Math.round(n)}`;
   }
+};
+
+const nightsBetween = (checkIn, checkOut) => {
+  const a = new Date(`${checkIn}T00:00:00`);
+  const b = new Date(`${checkOut}T00:00:00`);
+  if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return 0;
+  return Math.max(0, Math.floor((b - a) / 86400000));
 };
 
 const RoomDetails = () => {
@@ -63,6 +71,7 @@ const RoomDetails = () => {
   });
   const [specialRequests, setSpecialRequests] = useState("");
   const [bookingSending, setBookingSending] = useState(false);
+  const [showBookingConfirm, setShowBookingConfirm] = useState(false);
 
   useRoomDetails(id, setLoading, setRoom, fetchRoomById, toast);
 
@@ -389,35 +398,19 @@ const RoomDetails = () => {
               type="button"
               className="room-details__button"
               disabled={bookingSending}
-              onClick={async () => {
-                try {
-                  if (!user) {
-                    const next = location.pathname + location.search + location.hash;
-                    navigate(`/login?next=${encodeURIComponent(next)}`);
-                    return;
-                  }
-
-                  if (!bookingDraft.checkIn || !bookingDraft.checkOut) {
-                    toast.error("Select dates first.");
-                    return;
-                  }
-
-                  setBookingSending(true);
-                  const res = await createBookingRequest({
-                    room,
-                    user,
-                    checkIn: bookingDraft.checkIn,
-                    checkOut: bookingDraft.checkOut,
-                    guests: bookingDraft.guests,
-                    specialRequests,
-                  });
-                  toast.success("Booking request sent.");
-                  navigate(`/booking/confirmation/${encodeURIComponent(res.id)}`);
-                } catch (e) {
-                  toast.error(e?.message || "Failed to create booking.");
-                } finally {
-                  setBookingSending(false);
+              onClick={() => {
+                if (!user) {
+                  const next = location.pathname + location.search + location.hash;
+                  navigate(`/login?next=${encodeURIComponent(next)}`);
+                  return;
                 }
+
+                if (!bookingDraft.checkIn || !bookingDraft.checkOut) {
+                  toast.error("Select dates first.");
+                  return;
+                }
+
+                setShowBookingConfirm(true);
               }}
             >
               {bookingSending ? "Sending..." : "Request booking"}
@@ -426,6 +419,67 @@ const RoomDetails = () => {
               View all rooms
             </Link>
           </div>
+
+          <ConfirmDialog
+            open={showBookingConfirm}
+            title="Confirm booking"
+            confirmLabel="Confirm booking"
+            onConfirm={async () => {
+              setShowBookingConfirm(false);
+              setBookingSending(true);
+              try {
+                const res = await createBookingRequest({
+                  room,
+                  user,
+                  checkIn: bookingDraft.checkIn,
+                  checkOut: bookingDraft.checkOut,
+                  guests: bookingDraft.guests,
+                  specialRequests,
+                });
+                toast.success("Booking request sent.");
+                navigate(`/booking/confirmation/${encodeURIComponent(res.id)}`);
+              } catch (e) {
+                toast.error(e?.message || "Failed to create booking.");
+              } finally {
+                setBookingSending(false);
+              }
+            }}
+            onClose={() => setShowBookingConfirm(false)}
+          >
+            <div className="booking-confirm-summary">
+              <div className="booking-confirm-summary__row">
+                <span className="booking-confirm-summary__label">Room type</span>
+                <span className="booking-confirm-summary__value">{room?.type}</span>
+              </div>
+              <div className="booking-confirm-summary__row">
+                <span className="booking-confirm-summary__label">Check-in</span>
+                <span className="booking-confirm-summary__value">{bookingDraft.checkIn}</span>
+              </div>
+              <div className="booking-confirm-summary__row">
+                <span className="booking-confirm-summary__label">Check-out</span>
+                <span className="booking-confirm-summary__value">{bookingDraft.checkOut}</span>
+              </div>
+              <div className="booking-confirm-summary__row">
+                <span className="booking-confirm-summary__label">Guests</span>
+                <span className="booking-confirm-summary__value">{bookingDraft.guests}</span>
+              </div>
+              <div className="booking-confirm-summary__row booking-confirm-summary__row--total">
+                <span className="booking-confirm-summary__label">Total</span>
+                <span className="booking-confirm-summary__value">
+                  {formatMoney(nightsBetween(bookingDraft.checkIn, bookingDraft.checkOut) * Number(room?.base_price_per_night || 0), room?.currency || "USD")}
+                </span>
+              </div>
+              <div className="booking-confirm-summary__note">
+                {nightsBetween(bookingDraft.checkIn, bookingDraft.checkOut)} night(s) × {formatMoney(room?.base_price_per_night, room?.currency || "USD")} / night
+              </div>
+              {specialRequests ? (
+                <div className="booking-confirm-summary__row">
+                  <span className="booking-confirm-summary__label">Requests</span>
+                  <span className="booking-confirm-summary__value">{specialRequests}</span>
+                </div>
+              ) : null}
+            </div>
+          </ConfirmDialog>
 
 
         </div>

@@ -1,5 +1,5 @@
 import "./Rooms.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import BookingSearch from "../BookingSearch/BookingSearch.jsx";
 import toast from "react-hot-toast";
@@ -8,24 +8,60 @@ import Skeleton from "../Skeleton/Skeleton.jsx";
 import { useAvailableRooms, useRooms } from "../../hooks/rooms.js";
 import { formatMoney, pickType } from "../../utils/helpers/rooms.js";
 
+const todayISO = () => {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.toISOString().slice(0, 10);
+};
+
+const addDaysISO = (isoDate, days) => {
+  const d = new Date(`${isoDate}T00:00:00`);
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+};
+
 const Rooms = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [allRooms, setAllRooms] = useState([]);
   const [roomsLoading, setRoomsLoading] = useState(true);
   const [availableRooms, setAvailableRooms] = useState(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(false);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const mobileFilterRef = useRef(null);
   const checkIn = searchParams.get("checkIn") || "";
   const checkOut = searchParams.get("checkOut") || "";
   const guestsParam = searchParams.get("guests") || "";
   const roomTypeParam = searchParams.get("roomType") || "any";
   const guests = guestsParam ? Number(guestsParam) : 0;
-  const hasDateFilter = Boolean(checkIn && checkOut);
+  const effectiveCheckIn = checkIn || todayISO();
+  const effectiveCheckOut = checkOut || addDaysISO(effectiveCheckIn, 1);
+  const hasDateFilter = Boolean(effectiveCheckIn && effectiveCheckOut);
   const hasGuestFilter = Number.isFinite(guests) && guests > 0;
   const showRoomsList = roomTypeParam !== "any" || hasDateFilter || hasGuestFilter;
 
   useRooms(setRoomsLoading, setAllRooms, fetchActiveRooms, toast);
-  useAvailableRooms(hasDateFilter, setAvailabilityLoading, setAvailableRooms, fetchAvailableRooms, toast, hasGuestFilter, guests, checkIn, checkOut);
+  useAvailableRooms(
+    hasDateFilter,
+    setAvailabilityLoading,
+    setAvailableRooms,
+    fetchAvailableRooms,
+    toast,
+    hasGuestFilter,
+    guests,
+    effectiveCheckIn,
+    effectiveCheckOut
+  );
 
+  useEffect(() => {
+    if (!mobileFilterOpen) return;
+    const handler = (e) => {
+      if (mobileFilterRef.current && !mobileFilterRef.current.contains(e.target)) {
+        setMobileFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [mobileFilterOpen]);
 
   const roomTypes = useMemo(
     () => Array.from(new Set(allRooms.map((r) => r.type).filter(Boolean))).sort(),
@@ -101,8 +137,8 @@ const Rooms = () => {
           <BookingSearch
             variant="bar"
             defaultValues={{
-              ...(checkIn ? { checkIn } : {}),
-              ...(checkOut ? { checkOut } : {}),
+              checkIn: effectiveCheckIn,
+              checkOut: effectiveCheckOut,
               guests: guestsParam || "2",
             }}
             onSubmit={onSearch}
@@ -111,7 +147,7 @@ const Rooms = () => {
         </div>
 
         <div className="rooms__layout">
-          <aside className="rooms__sidebar" aria-label="Room type filters">
+          <aside className="rooms__sidebar rooms__sidebar--desktop" aria-label="Room type filters">
             <div className="rooms__sidebar-title">Room types</div>
             <div className="rooms__sidebar-list">
               {roomsLoading ? (
@@ -126,7 +162,7 @@ const Rooms = () => {
                   <button
                     type="button"
                     className={`room-type-pill room-type-pill--sidebar${roomTypeParam === "any" ? " room-type-pill--active" : ""}`}
-                    onClick={() => pickType("any")}
+                    onClick={() => pickType("any", effectiveCheckIn, effectiveCheckOut, guestsParam, setSearchParams)}
                   >
                     <span className="room-type-pill__name">All</span>
                     <span className="room-type-pill__meta">{allRooms.length} rooms</span>
@@ -139,7 +175,7 @@ const Rooms = () => {
                         type="button"
                         className={`room-type-pill room-type-pill--sidebar${isActive ? " room-type-pill--active" : ""}`}
                         key={card.type}
-                        onClick={() => pickType(card.type)}
+                        onClick={() => pickType(card.type, effectiveCheckIn, effectiveCheckOut, guestsParam, setSearchParams)}
                       >
                         <span className="room-type-pill__name">{card.type}</span>
                         <span className="room-type-pill__badge">
@@ -158,6 +194,53 @@ const Rooms = () => {
           </aside>
 
           <div className="rooms__main">
+            <div className="rooms__filter-mobile" ref={mobileFilterRef}>
+              <label>Room type</label>
+              <div className="rooms__filter-select">
+                <button
+                  type="button"
+                  className="rooms__filter-trigger"
+                  disabled={roomsLoading}
+                  onClick={() => setMobileFilterOpen((prev) => !prev)}
+                >
+                  <span className="rooms__filter-value">{roomTypeLabel}</span>
+                  <span className="rooms__filter-chev" aria-hidden="true" />
+                </button>
+                {mobileFilterOpen ? (
+                  <div className="rooms__filter-options">
+                    {roomsLoading ? (
+                      <div className="rooms__filter-option rooms__filter-option--disabled">Loading…</div>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          className={`rooms__filter-option${roomTypeParam === "any" ? " rooms__filter-option--active" : ""}`}
+                          onClick={() => {
+                            pickType("any", effectiveCheckIn, effectiveCheckOut, guestsParam, setSearchParams);
+                            setMobileFilterOpen(false);
+                          }}
+                        >
+                          All room types ({allRooms.length})
+                        </button>
+                        {typeCards.map((card) => (
+                          <button
+                            type="button"
+                            className={`rooms__filter-option${String(roomTypeParam).toLowerCase() === String(card.type).toLowerCase() ? " rooms__filter-option--active" : ""}`}
+                            key={card.type}
+                            onClick={() => {
+                              pickType(card.type, effectiveCheckIn, effectiveCheckOut, guestsParam, setSearchParams);
+                              setMobileFilterOpen(false);
+                            }}
+                          >
+                            {card.type} ({card.available}/{card.total})
+                          </button>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                ) : null}
+              </div>
+            </div>
             {roomsLoading ? (
               <div className="rooms__list">
                 <div className="rooms__list-header">
