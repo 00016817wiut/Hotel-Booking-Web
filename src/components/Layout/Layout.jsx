@@ -26,7 +26,7 @@ const Layout = () => {
           },
           error: {
             iconTheme: {
-              primary: "#b3202a",
+              primary: "#A8843D",
               secondary: "#ffffff",
             },
           },

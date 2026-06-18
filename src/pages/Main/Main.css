@@ -2,14 +2,6 @@
   position: relative;
 }
 
-.main::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.7;
-}
-
 .main__container {
   position: relative;
   z-index: 1;

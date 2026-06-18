@@ -1,27 +1,32 @@
 .account {
-  padding: clamp(42px, 6vw, 72px) 0 clamp(70px, 10vw, 120px);
-  background: #fff;
+  padding: clamp(48px, 6vw, 80px) 0 clamp(70px, 10vw, 120px);
+  background: var(--color-white);
 }
 
 .account__container {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
-  gap: 18px;
+  gap: 24px;
   align-items: start;
 }
 
 .account__sidebar {
-  padding: 14px;
+  padding: 16px;
   position: sticky;
-  top: 92px;
+  top: 100px;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow-sm);
 }
 
 .account__title {
-  font-family: var(--font-family);
-  font-weight: 800;
-  color: var(--color-primary-strong);
-  letter-spacing: 0.01em;
-  margin-bottom: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-charcoal);
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+  font-size: 1.05rem;
 }
 
 .account__nav {
@@ -31,39 +36,43 @@
 .account_title {
   font-weight: 600;
   font-size: 26px;
-  color: var(--color-primary-strong);
+  color: var(--color-charcoal);
 }
 
 .account__link {
   display: block;
-  padding: 10px 12px;
-  border-radius: 2px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
   color: var(--color-text);
-  background: #ffffff;
+  background: transparent;
+  font-family: var(--font-accent);
+  font-size: var(--font-size-small);
+  transition: all 0.2s ease;
 }
 
 .account__link:hover {
-  border-color: rgba(179, 32, 42, 0.25);
-  background: rgba(179, 32, 42, 0.06);
+  border-color: var(--color-border-light);
+  background: rgba(212, 176, 106, 0.06);
 }
 
 .account__link--active {
-  border-color: rgba(179, 32, 42, 0.45);
-  background: rgba(179, 32, 42, 0.10);
-  color: var(--color-primary-strong);
-  font-weight: 700;
+  border-color: var(--color-gold-light);
+  background: rgba(212, 176, 106, 0.1);
+  color: var(--color-gold-dark);
+  font-weight: 600;
 }
 
 .account__main {
-  background: #f1f1f137;
-  padding: 16px;
+  background: var(--color-surface-soft);
+  padding: 20px;
+  border-radius: var(--radius-lg);
 }
 
-/* Add to existing Account.css */
 .account__divider {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-family: var(--font-accent);
+  font-size: var(--font-size-tiny);
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-text-muted);

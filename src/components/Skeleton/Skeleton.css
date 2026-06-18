@@ -1,8 +1,8 @@
 .skel {
   position: relative;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
+  background: rgba(43, 43, 43, 0.06);
+  border-radius: var(--radius-sm);
 }
 
 .skel::after {
@@ -13,10 +13,10 @@
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.5),
     rgba(255, 255, 255, 0)
   );
-  animation: skel-shimmer 1.15s ease-in-out infinite;
+  animation: skel-shimmer 1.2s ease-in-out infinite;
 }
 
 @keyframes skel-shimmer {

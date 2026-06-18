@@ -25,9 +25,9 @@ const NavBar = () => {
         <div className="nav__container content">
           <Link to="/" className="nav__logo" aria-label="Go to homepage">
             <img src={logo} alt="Anor Avenue Hotel logo" className="nav__logo-image" />
-            <div>
-              <p>Anor</p>
-              <span>Avenue Hotel</span>
+            <div className="nav__brand">
+              <span className="nav__brand-name">Anor</span>
+              <span className="nav__brand-sub">Avenue Hotel</span>
             </div>
           </Link>
 
@@ -94,9 +94,9 @@ const NavBar = () => {
           <div className="nav__bar-top">
             <Link to="/" className="nav__logo" onClick={closeMenu}>
               <img src={logo} alt="Anor Avenue Hotel logo" />
-              <div>
-                <p>Anor</p>
-                <span>Avenue Hotel</span>
+              <div className="nav__brand">
+                <span className="nav__brand-name">Anor</span>
+                <span className="nav__brand-sub">Avenue Hotel</span>
               </div>
             </Link>
             <button className="nav__close" type="button" onClick={closeMenu} aria-label="Close mobile menu">

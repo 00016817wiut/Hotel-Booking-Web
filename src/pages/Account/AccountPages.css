@@ -134,7 +134,7 @@
 }
 
 .booking-filters__field select:focus-visible {
-  outline: 2px solid rgba(179, 32, 42, 0.35);
+  outline: 2px solid rgba(212, 176, 106, 0.35);
   outline-offset: 2px;
 }
 
@@ -191,8 +191,8 @@
 }
 
 .booking-item__status--pending {
-  border-color: rgba(179, 32, 42, 0.25);
-  background: rgba(179, 32, 42, 0.08);
+  border-color: rgba(212, 176, 106, 0.25);
+  background: rgba(212, 176, 106, 0.08);
 }
 
 .booking-item__status--cancelled {
@@ -217,7 +217,7 @@
   min-height: 40px;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
-  border: 1px solid rgba(179, 32, 42, 0.35);
+  border: 1px solid rgba(212, 176, 106, 0.35);
   background: #ffffff;
   color: var(--color-primary-strong);
   font-weight: 700;
@@ -225,7 +225,7 @@
 }
 
 .booking-item__cancel:hover {
-  background: rgba(179, 32, 42, 0.06);
+  background: rgba(212, 176, 106, 0.06);
 }
 
 .booking-item__cancel:disabled {
@@ -243,7 +243,7 @@
   min-height: 38px;
   padding: 6px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(179, 32, 42, 0.35);
+  border: 1px solid rgba(212, 176, 106, 0.35);
   background: #fff;
   color: var(--color-primary-strong);
   cursor: pointer;
@@ -251,7 +251,7 @@
 }
 
 .booking-item__delete:hover {
-  background: rgba(179, 32, 42, 0.08);
+  background: rgba(212, 176, 106, 0.08);
 }
 
 .booking-item__requests {
@@ -301,15 +301,15 @@
 }
 
 .account-page__danger {
-  border-color: rgba(179, 32, 42, 0.2);
-  background: rgba(179, 32, 42, 0.04);
+  border-color: rgba(212, 176, 106, 0.2);
+  background: rgba(212, 176, 106, 0.04);
 }
 
 .account-page__logout {
   width: 100%;
   min-height: 42px;
   padding: 10px;
-  border: 1px solid rgba(179, 32, 42, 0.3);
+  border: 1px solid rgba(212, 176, 106, 0.3);
   border-radius: var(--radius-sm);
   background: #fff;
   color: var(--color-primary-strong);
@@ -318,7 +318,7 @@
 }
 
 .account-page__logout:hover {
-  background: rgba(179, 32, 42, 0.08);
+  background: rgba(212, 176, 106, 0.08);
 }
 
 .account-page__code {
@@ -352,7 +352,7 @@
 }
 
 .admin-stat:hover {
-  border-color: rgba(179, 32, 42, 0.4);
+  border-color: rgba(212, 176, 106, 0.4);
   box-shadow: 0 8px 20px -16px rgba(127, 20, 27, 0.5);
 }
 
@@ -382,8 +382,8 @@
 }
 
 .role-badge--admin {
-  border-color: rgba(179, 32, 42, 0.35);
-  background: rgba(179, 32, 42, 0.08);
+  border-color: rgba(212, 176, 106, 0.35);
+  background: rgba(212, 176, 106, 0.08);
   color: var(--color-primary-strong);
 }
 
@@ -431,8 +431,8 @@
 }
 
 .user-item__role--admin {
-  border-color: rgba(179, 32, 42, 0.3);
-  background: rgba(179, 32, 42, 0.08);
+  border-color: rgba(212, 176, 106, 0.3);
+  background: rgba(212, 176, 106, 0.08);
   color: var(--color-primary-strong);
 }
 
@@ -450,8 +450,8 @@
 }
 
 .user-item__toggle:hover {
-  background: rgba(179, 32, 42, 0.06);
-  border-color: rgba(179, 32, 42, 0.3);
+  background: rgba(212, 176, 106, 0.06);
+  border-color: rgba(212, 176, 106, 0.3);
 }
 
 /* Shared buttons */
@@ -486,7 +486,7 @@
 }
 
 .btn-secondary:hover {
-  border-color: rgba(179, 32, 42, 0.3);
+  border-color: rgba(212, 176, 106, 0.3);
   color: var(--color-primary-strong);
 }
 
@@ -552,7 +552,7 @@
 }
 
 .modal__close:hover {
-  background: rgba(179, 32, 42, 0.08);
+  background: rgba(212, 176, 106, 0.08);
   color: var(--color-primary-strong);
 }
 
@@ -718,7 +718,7 @@
 
 .image-list__item button:hover {
   color: var(--color-primary-strong);
-  background: rgba(179, 32, 42, 0.08);
+  background: rgba(212, 176, 106, 0.08);
 }
 
 /* Room image ordering */
@@ -748,11 +748,11 @@
 }
 
 .room-images-order__item:hover {
-  border-color: rgba(179, 32, 42, 0.4);
+  border-color: rgba(212, 176, 106, 0.4);
 }
 
 .room-images-order__item--cover {
-  border-color: rgba(179, 32, 42, 0.7);
+  border-color: rgba(212, 176, 106, 0.7);
   box-shadow: 0 12px 22px -18px rgba(127, 20, 27, 0.8);
 }
 
@@ -760,7 +760,7 @@
   position: absolute;
   top: 8px;
   left: 8px;
-  background: rgba(179, 32, 42, 0.92);
+  background: rgba(212, 176, 106, 0.92);
   color: #fff;
   font-weight: 800;
   font-size: 0.75rem;
@@ -875,6 +875,6 @@
 }
 
 .room-admin-card__btn:hover {
-  border-color: rgba(179, 32, 42, 0.3);
-  background: rgba(179, 32, 42, 0.06);
+  border-color: rgba(212, 176, 106, 0.3);
+  background: rgba(212, 176, 106, 0.06);
 }

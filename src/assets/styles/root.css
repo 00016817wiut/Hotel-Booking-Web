@@ -1,46 +1,59 @@
 :root {
-  --font-family: Arial, sans-serif;
-  --second-family: Arial, sans-serif;
-  --third-family: Arial, sans-serif;
-  --font3: "Merriweather", serif;
+  --font-heading: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+  --font-accent: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+  --font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --second-family: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+  --third-family: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
 
-  --font-size-heading: clamp(2rem, 2.2vw + 1.4rem, 3.2rem);
-  --font-size-subheading: clamp(1.25rem, 1vw + 1rem, 1.8rem);
-  --font-size-text: clamp(0.95rem, 0.2vw + 0.9rem, 1rem);
+  --font-size-heading: clamp(2.2rem, 2.6vw + 1.4rem, 3.6rem);
+  --font-size-subheading: clamp(1.3rem, 1vw + 1rem, 1.85rem);
+  --font-size-text: clamp(0.95rem, 0.2vw + 0.9rem, 1.05rem);
+  --font-size-small: 0.85rem;
+  --font-size-tiny: 0.78rem;
 
-  --color-bg: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-soft: #fbf4f6;
-  --color-primary: #b3202a;
-  --color-primary-strong: #7f141b;
-  --color-accent: #cb4d58;
-  --color-accent-soft: #f3d6da;
-  --color-atlas: #2f7a66;
-  --color-text: #45261c;
-  --color-text-muted: #775448;
-  --color-border: #ede3e5;
-  --color-shadow: 0 24px 54px -30px rgba(207, 205, 205, 0.45);
+  --color-gold: #D4B06A;
+  --color-gold-strong: #C9A25E;
+  --color-gold-light: #E0C48A;
+  --color-gold-dark: #A8843D;
+  --color-ivory: #F8F6F1;
+  --color-cream: #FCFAF5;
+  --color-white: #FFFFFF;
+  --color-charcoal: #2B2B2B;
+  --color-text: #3D3D3D;
+  --color-text-muted: #8A8A8A;
+  --color-border: #E8E3D9;
+  --color-border-light: #F0EDE6;
+  --color-bg: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #FCFAF5;
+  --color-shadow-sm: 0 2px 8px rgba(43, 43, 43, 0.06);
+  --color-shadow: 0 8px 32px rgba(43, 43, 43, 0.08);
+  --color-shadow-lg: 0 20px 60px rgba(43, 43, 43, 0.10);
+  --color-overlay: rgba(43, 43, 43, 0.4);
 
-  --atlas-pattern: repeating-linear-gradient(
-    132deg,
-    rgba(179, 32, 42, 0.14) 0 18px,
-    rgba(125, 33, 66, 0.12) 18px 36px,
-    rgba(47, 122, 102, 0.12) 36px 54px
-  );
-  --atlas-pattern-soft: repeating-linear-gradient(
-    132deg,
-    rgba(179, 32, 42, 0.08) 0 16px,
-    rgba(125, 33, 66, 0.07) 16px 32px,
-    rgba(47, 122, 102, 0.08) 32px 48px
-  );
-
-  --radius-xs: 6px;
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 
-  --section-space: clamp(64px, 7vw, 120px);
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  --section-space: clamp(72px, 8vw, 140px);
   --content-max: 1200px;
+  --content-narrow: 860px;
+
+  --color-primary: #D4B06A;
+  --color-primary-strong: #A8843D;
+  --color-accent: #E0C48A;
+  --color-accent-soft: #F8F6F1;
+  --color-atlas: #A8843D;
 }
 
 .box-config {
