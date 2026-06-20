@@ -167,6 +167,9 @@
   .hero {
     min-height: 100vh;
   }
+  .hero__actions {
+    margin-bottom: 20px;
+  }
 }
 
 @media (max-width: 560px) {

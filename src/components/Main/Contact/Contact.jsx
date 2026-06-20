@@ -1,4 +1,4 @@
-import "./contact.css";
+import "./Contact.css";
 import arrows from "../../../assets/icons/contact_arrows.svg";
 
 const Contact = () => {
